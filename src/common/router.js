@@ -110,8 +110,16 @@ export const getRouterData = app => {
     '/list/table-list': {
       component: dynamicWrapper(app, ['rule'], () => import('../routes/List/TableList')),
     },
-    '/projects/basic-list': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/BasicList')),
+    '/projects': {
+      component: dynamicWrapper(app, ['list'], () => import('../routes/Project/Projects')),
+    },
+    '/projects/list': {
+      component: dynamicWrapper(app, ['list'], () => import('../routes/Project/ProjectList')),
+    },
+    '/projects/:id': {
+      component: dynamicWrapper(app, ['profile'], () =>
+        import('../routes/Project/ProjectProfile')
+      ),
     },
     '/list/card-list': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/List/CardList')),

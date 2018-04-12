@@ -3,66 +3,27 @@ import { isUrl } from '../utils/utils';
 const menuData = [
   {
     name: '工作台',
-    icon: 'dashboard',
+    icon: 'desktop',
     path: 'dashboard/workplace',
   },
   {
     name: '项目',
-    icon: 'form',
-    path: 'projects/basic-list',
+    icon: 'appstore-o',
+    path: 'projects',
   },
   {
     name: '文档',
-    icon: 'table',
+    icon: 'folder',
     path: 'list',
-    children: [
-      {
-        name: '查询表格',
-        path: 'table-list',
-      },
-      {
-        name: '卡片列表',
-        path: 'card-list',
-      },
-      {
-        name: '搜索列表',
-        path: 'search',
-        children: [
-          {
-            name: '搜索列表（文章）',
-            path: 'articles',
-          },
-          {
-            name: '搜索列表（项目）',
-            path: 'projects',
-          },
-          {
-            name: '搜索列表（应用）',
-            path: 'applications',
-          },
-        ],
-      },
-    ],
   },
   {
     name: '报表',
-    icon: 'profile',
-    path: 'profile',
-    children: [
-      {
-        name: '基础详情页',
-        path: 'basic',
-      },
-      {
-        name: '高级详情页',
-        path: 'advanced',
-        authority: 'admin',
-      },
-    ],
+    icon: 'dot-chart',
+    path: 'dashboard/analysis',
   },
   {
     name: '数据',
-    icon: 'check-circle-o',
+    icon: 'database',
     path: 'result',
     children: [
       {
@@ -77,27 +38,8 @@ const menuData = [
   },
   {
     name: '设置',
-    icon: 'warning',
+    icon: 'setting',
     path: 'exception',
-    children: [
-      {
-        name: '403',
-        path: '403',
-      },
-      {
-        name: '404',
-        path: '404',
-      },
-      {
-        name: '500',
-        path: '500',
-      },
-      {
-        name: '触发异常',
-        path: 'trigger',
-        hideInMenu: true,
-      },
-    ],
   },
   {
     name: '账户',
