@@ -59,7 +59,7 @@ export default class ProjectList extends PureComponent {
           <RadioButton value="progress">实施</RadioButton>
           <RadioButton value="waiting">收尾</RadioButton>
           <RadioButton value="progress">审计</RadioButton>
-          <RadioButton value="waiting">评估</RadioButton>
+          <RadioButton value="waiting">后评估</RadioButton>
         </RadioGroup>
         <Search className={styles.extraContentSearch} placeholder="请输入" onSearch={() => ({})} />
       </div>
@@ -75,7 +75,13 @@ export default class ProjectList extends PureComponent {
     const ListContent = ({ data: { owner, createdAt, percent, status } }) => (
       <div className={styles.listContent}>
         <div className={styles.listContentItem}>
-          <span>Owner</span>
+          <p>乌鲁木齐分公司</p>
+        </div>
+        <div className={styles.listContentItem}>
+          <p>移动通信网项目</p>
+        </div>
+        <div className={styles.listContentItem}>
+          <span>项目经理</span>
           <p>{owner}</p>
         </div>
         <div className={styles.listContentItem}>
@@ -112,14 +118,17 @@ export default class ProjectList extends PureComponent {
         <div className={styles.standardList}>
           <Card bordered={false}>
             <Row>
-              <Col sm={8} xs={24}>
-                <Info title="待办任务" value="8个任务" bordered />
+              <Col sm={6} xs={24}>
+                <Info title="项目" value="10" bordered />
               </Col>
-              <Col sm={8} xs={24}>
-                <Info title="延期任务" value="2个任务" bordered />
+              <Col sm={6} xs={24}>
+                <Info title="待办任务" value="8" bordered />
               </Col>
-              <Col sm={8} xs={24}>
-                <Info title="本周完成任务数" value="24个任务" />
+              <Col sm={6} xs={24}>
+                <Info title="延期任务" value="2" bordered />
+              </Col>
+              <Col sm={6} xs={24}>
+                <Info title="本周完成任务数" value="24" />
               </Col>
             </Row>
           </Card>
