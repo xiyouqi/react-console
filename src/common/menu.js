@@ -14,7 +14,7 @@ const menuData = [
   {
     name: '文档',
     icon: 'folder',
-    path: 'list',
+    path: 'docs',
   },
   {
     name: '报表',
@@ -24,11 +24,11 @@ const menuData = [
   {
     name: '数据',
     icon: 'database',
-    path: 'result',
+    path: 'data',
     children: [
       {
-        name: '成功',
-        path: 'success',
+        name: '供应商',
+        path: 'vendors',
       },
       {
         name: '失败',

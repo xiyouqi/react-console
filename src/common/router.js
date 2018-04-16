@@ -121,6 +121,12 @@ export const getRouterData = app => {
         import('../routes/Project/ProjectProfile')
       ),
     },
+    '/docs': {
+      component: dynamicWrapper(app, ['list'], () => import('../routes/Documention/DocList')),
+    },
+    '/data/vendors': {
+      component: dynamicWrapper(app, ['list'], () => import('../routes/Data/VendorList')),
+    },
     '/list/card-list': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/List/CardList')),
     },
