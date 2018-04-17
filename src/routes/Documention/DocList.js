@@ -34,7 +34,7 @@ export default class SearchList extends PureComponent {
           className={styles.slectRight}
           placeholder="项目一"
           onChange={this.handleFormSubmit}
-          style={{ maxWidth: 200, width: '100%', height: '40px' }}
+          style={{ maxWidth: 200, width: '100%' }}
         >
           <Option value="1">项目一</Option>
           <Option value="2">项目二</Option>
