@@ -117,15 +117,25 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['list'], () => import('../routes/Project/ProjectList')),
     },
     '/projects/:id': {
-      component: dynamicWrapper(app, ['profile'], () =>
-        import('../routes/Project/ProjectProfile')
-      ),
+      component: dynamicWrapper(app, ['profile'], () => import('../routes/Project/ProjectProfile')),
     },
     '/docs': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/Documention/DocList')),
     },
     '/data/vendors': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/Data/VendorList')),
+    },
+    '/data/term': {
+      component: dynamicWrapper(app, ['list'], () => import('../routes/Data/TermList')),
+    },
+    '/data/site': {
+      component: dynamicWrapper(app, ['list'], () => import('../routes/Data/SiteList')),
+    },
+    '/data/locale': {
+      component: dynamicWrapper(app, ['list'], () => import('../routes/Data/LocaleList')),
+    },
+    '/data/construction': {
+      component: dynamicWrapper(app, ['list'], () => import('../routes/Data/ConstructionList')),
     },
     '/list/card-list': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/List/CardList')),

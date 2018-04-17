@@ -31,6 +31,22 @@ const menuData = [
         path: 'vendors',
       },
       {
+        name: '术语管理',
+        path: 'term',
+      },
+      {
+        name: '站点信息',
+        path: 'site',
+      },
+      {
+        name: '地点信息',
+        path: 'locale',
+      },
+      {
+        name: '待建站址库',
+        path: 'construction',
+      },
+      {
         name: '失败',
         path: 'fail',
       },

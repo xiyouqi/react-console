@@ -202,12 +202,12 @@ export default class VendorList extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="供应商名称">
+            <FormItem label="站点名称">
               {getFieldDecorator('no')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="供应商类型">
+            <FormItem label="站点类型">
               {getFieldDecorator('status')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
                   <Option value="0">关闭</Option>
@@ -240,12 +240,12 @@ export default class VendorList extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="供应商名称">
+            <FormItem label="站点名称">
               {getFieldDecorator('no')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="供应商类型">
+            <FormItem label="站点类型">
               {getFieldDecorator('status')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
                   <Option value="0">关闭</Option>
@@ -296,11 +296,11 @@ export default class VendorList extends PureComponent {
 
     const columns = [
       {
-        title: '供应商名称',
+        title: '站点名称',
         dataIndex: 'no',
       },
       {
-        title: '供应商类型',
+        title: '站点类型',
         dataIndex: 'description',
       },
       {
@@ -338,8 +338,10 @@ export default class VendorList extends PureComponent {
       {
         title: '操作',
         render: () => (
-          <Fragment  style={{ paddingLeft: '0' }}>
-            <a href="#" className={styles.deleteBtn}>删除</a>
+          <Fragment style={{ paddingLeft: '0' }}>
+            <a href="#" className={styles.deleteBtn}>
+              删除
+            </a>
           </Fragment>
         ),
       },
@@ -358,7 +360,7 @@ export default class VendorList extends PureComponent {
     };
 
     return (
-      <PageHeaderLayout title="供应商列表">
+      <PageHeaderLayout title="站点信息列表">
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
