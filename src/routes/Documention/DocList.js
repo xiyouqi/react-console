@@ -1,20 +1,7 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
-import {
-  List,
-  Card,
-  Row,
-  Col,
-  Radio,
-  Input,
-  Progress,
-  Button,
-  Icon,
-  Dropdown,
-  Menu,
-  Avatar,
-} from 'antd';
+import { List, Card, Radio, Input, Button, Icon, Dropdown, Menu, Avatar } from 'antd';
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
@@ -22,13 +9,12 @@ import styles from './DocList.less';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
-const { Search } = Input;
 
 @connect(({ list, loading }) => ({
   list,
   loading: loading.models.list,
 }))
-export default class DocList extends PureComponent {
+export default class SearchList extends PureComponent {
   componentDidMount() {
     this.props.dispatch({
       type: 'list/fetch',
@@ -41,11 +27,15 @@ export default class DocList extends PureComponent {
   render() {
     const { list: { list }, loading } = this.props;
 
-    const Info = ({ title, value, bordered }) => (
-      <div className={styles.headerInfo}>
-        <span>{title}</span>
-        <p>{value}</p>
-        {bordered && <em />}
+    const mainSearch = (
+      <div className={styles.searchBar} style={{ textAlign: 'center' }}>
+        <Input.Search
+          placeholder="请输入文档名关键字或后缀进行搜索"
+          enterButton="搜索"
+          size="large"
+          onSearch={this.handleFormSubmit}
+          style={{ width: 522 }}
+        />
       </div>
     );
 
@@ -60,7 +50,6 @@ export default class DocList extends PureComponent {
           <RadioButton value="progress">审计</RadioButton>
           <RadioButton value="waiting">评估</RadioButton>
         </RadioGroup>
-        <Search className={styles.extraContentSearch} placeholder="请输入" onSearch={() => ({})} />
       </div>
     );
 
@@ -71,18 +60,15 @@ export default class DocList extends PureComponent {
       total: 50,
     };
 
-    const ListContent = ({ data: { owner, createdAt, percent, status } }) => (
+    const ListContent = ({ data: { owner, createdAt } }) => (
       <div className={styles.listContent}>
         <div className={styles.listContentItem}>
-          <span>Owner</span>
+          <span>创建者</span>
           <p>{owner}</p>
         </div>
         <div className={styles.listContentItem}>
-          <span>开始时间</span>
+          <span>创建时间</span>
           <p>{moment(createdAt).format('YYYY-MM-DD HH:mm')}</p>
-        </div>
-        <div className={styles.listContentItem}>
-          <Progress percent={percent} status={status} strokeWidth={6} style={{ width: 180 }} />
         </div>
       </div>
     );
@@ -105,35 +91,28 @@ export default class DocList extends PureComponent {
         </a>
       </Dropdown>
     );
+    const uploadBtn = () => (
+      <Button
+        icon="plus"
+        type="primary"
+        onClick={() => this.handleModalVisible(true)}
+        className={styles.uploadBtn}
+      >
+        上传
+      </Button>
+    );
 
     return (
-      <PageHeaderLayout>
+      <PageHeaderLayout title="文档列表" content={mainSearch}>
         <div className={styles.standardList}>
-          <Card bordered={false}>
-            <Row>
-              <Col sm={8} xs={24}>
-                <Info title="我的待办" value="8个任务" bordered />
-              </Col>
-              <Col sm={8} xs={24}>
-                <Info title="本周任务平均处理时间" value="32分钟" bordered />
-              </Col>
-              <Col sm={8} xs={24}>
-                <Info title="本周完成任务数" value="24个任务" />
-              </Col>
-            </Row>
-          </Card>
-
           <Card
             className={styles.listCard}
             bordered={false}
-            title="标准列表"
             style={{ marginTop: 24 }}
             bodyStyle={{ padding: '0 32px 40px 32px' }}
             extra={extraContent}
+            upload={uploadBtn}
           >
-            <Button type="dashed" style={{ width: '100%', marginBottom: 8 }} icon="plus">
-              添加
-            </Button>
             <List
               size="large"
               rowKey="id"
