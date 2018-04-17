@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
-import { List, Card, Radio, Input, Button, Icon, Dropdown, Menu, Avatar } from 'antd';
+import { List, Card, Radio, Input, Button, Icon, Dropdown, Menu, Avatar, Select } from 'antd';
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
@@ -9,6 +9,7 @@ import styles from './DocList.less';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
+const { Option } = Select;
 
 @connect(({ list, loading }) => ({
   list,
@@ -29,6 +30,17 @@ export default class SearchList extends PureComponent {
 
     const mainSearch = (
       <div className={styles.searchBar} style={{ textAlign: 'center' }}>
+        <Select
+          className={styles.slectRight}
+          placeholder="项目一"
+          onChange={this.handleFormSubmit}
+          style={{ maxWidth: 200, width: '100%', height: '40px' }}
+        >
+          <Option value="1">项目一</Option>
+          <Option value="2">项目二</Option>
+          <Option value="3">项目三</Option>
+          <Option value="4">项目四</Option>
+        </Select>
         <Input.Search
           placeholder="请输入文档名关键字或后缀进行搜索"
           enterButton="搜索"
@@ -91,19 +103,20 @@ export default class SearchList extends PureComponent {
         </a>
       </Dropdown>
     );
-    const uploadBtn = () => (
+
+    const UploadBtn = (
       <Button
-        icon="plus"
+        icon="arrow-down"
         type="primary"
         onClick={() => this.handleModalVisible(true)}
         className={styles.uploadBtn}
       >
-        上传
+        下载
       </Button>
     );
 
     return (
-      <PageHeaderLayout title="文档列表" content={mainSearch}>
+      <PageHeaderLayout content={mainSearch}>
         <div className={styles.standardList}>
           <Card
             className={styles.listCard}
@@ -111,7 +124,7 @@ export default class SearchList extends PureComponent {
             style={{ marginTop: 24 }}
             bodyStyle={{ padding: '0 32px 40px 32px' }}
             extra={extraContent}
-            upload={uploadBtn}
+            title={UploadBtn}
           >
             <List
               size="large"

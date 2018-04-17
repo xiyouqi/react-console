@@ -12,11 +12,11 @@ const titles = [
 ];
 
 const avatars = [
-  'https://towerfiles.oss-cn-hangzhou.aliyuncs.com/file_icons/file_extension_pdf.png', // Alipay
-  'https://towerfiles.oss-cn-hangzhou.aliyuncs.com/file_icons/file_extension_docx.png', // Angular
-  'https://towerfiles.oss-cn-hangzhou.aliyuncs.com/file_icons/file_extension_rar.png', // Ant Design
+  '../src/assets/pdf.png', // Alipay
+  '../src/assets/docx.png', // Angular
+  '../src/assets/rar.png', // Ant Design
   '../src/assets/wenjianjia.png', // Ant Design Pro
-  'https://towerfiles.oss-cn-hangzhou.aliyuncs.com/file_icons/file_extension_xlsx.png', // Bootstrap
+  '../src/assets/xlsx.png', // Bootstrap
   'https://gw.alipayobjects.com/zos/rmsportal/kZzEzemZyKLKFsojXItE.png', // React
   'https://gw.alipayobjects.com/zos/rmsportal/ComBAopevLwENQdKWiIn.png', // Vue
   'https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png', // Webpack
