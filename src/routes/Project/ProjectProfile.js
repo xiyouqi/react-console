@@ -37,7 +37,7 @@ const action = (
         </Button>
       </Dropdown>
     </ButtonGroup>
-    <Button type="primary">主操作</Button>
+    <Button type="primary">转资申请</Button>
   </Fragment>
 );
 
@@ -48,8 +48,8 @@ const extra = (
       <div className={styles.heading}>20</div>
     </Col>
     <Col xs={24} sm={12}>
-      <div className={styles.textSecondary}>合同金额</div>
-      <div className={styles.heading}>¥ 5.08 万元</div>
+      <div className={styles.textSecondary}>费用进度</div>
+      <div className={styles.heading}>80%</div>
     </Col>
   </Row>
 );
@@ -59,6 +59,9 @@ const description = (
     <Description term="项目经理">曲丽丽</Description>
     <Description term="项目阶段">设计</Description>
     <Description term="创建时间">2017-07-07</Description>
+    <Description term="合同金额">¥ 5.08 万元</Description>
+    <Description term="部门公司">乌鲁木齐</Description>
+    <Description term="项目状态">进行中</Description>
   </DescriptionList>
 );
 
