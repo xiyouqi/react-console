@@ -194,6 +194,65 @@ export default class Analysis extends Component {
 
     return (
       <Fragment>
+        <Row gutter={24} className={styles.mapRow}>
+          <Col xl={18} lg={24} md={24} sm={24} xs={24} style={{ marginBottom: 24 }}>
+            <Card title="项目进行情况" bordered={false}>
+              <Row>
+                <Col md={6} sm={12} xs={24}>
+                  <NumberInfo subTitle="项目总数" suffix="个" total={numeral(7245).format('0,0')} />
+                </Col>
+                <Col md={6} sm={12} xs={24}>
+                  <NumberInfo
+                    subTitle="筹备中项目"
+                    suffix="个"
+                    total={numeral(245).format('0,0')}
+                  />
+                </Col>
+                <Col md={6} sm={12} xs={24}>
+                  <NumberInfo
+                    subTitle="进行中项目"
+                    suffix="个"
+                    total={numeral(5200).format('0,0')}
+                  />
+                </Col>
+                <Col md={6} sm={12} xs={24}>
+                  <NumberInfo
+                    subTitle="已完成项目"
+                    suffix="个"
+                    total={numeral(1800).format('0,0')}
+                  />
+                </Col>
+              </Row>
+              <div className={styles.mapChart}>
+                <Tooltip title="等待后期实现">
+                  <img
+                    src="https://gw.alipayobjects.com/zos/rmsportal/HBWnDEUXCnGnGrRfrpKa.png"
+                    alt="map"
+                  />
+                </Tooltip>
+              </div>
+            </Card>
+          </Col>
+          <Col xl={6} lg={24} md={24} sm={24} xs={24}>
+            <Card
+              title="已完成项目占比"
+              bodyStyle={{ textAlign: 'center', fontSize: 0 }}
+              bordered={false}
+            >
+              <WaterWave height={161} title="已完成" percent={24} />
+            </Card>
+            <Card
+              className={styles.grade}
+              title="项目完成效率"
+              style={{ marginBottom: 24 }}
+              bodyStyle={{ textAlign: 'center' }}
+              bordered={false}
+            >
+              <Gauge title="完成效率" height={180} percent={65} />
+            </Card>
+          </Col>
+        </Row>
+        
         <Row gutter={24}>
           <Col {...topColResponsiveProps}>
             <ChartCard
@@ -380,64 +439,6 @@ export default class Analysis extends Component {
                 height={248}
                 lineWidth={4}
               />
-            </Card>
-          </Col>
-        </Row>
-        <Row gutter={24} className={styles.mapRow}>
-          <Col xl={18} lg={24} md={24} sm={24} xs={24} style={{ marginBottom: 24 }}>
-            <Card title="项目进行情况" bordered={false}>
-              <Row>
-                <Col md={6} sm={12} xs={24}>
-                  <NumberInfo subTitle="项目总数" suffix="个" total={numeral(7245).format('0,0')} />
-                </Col>
-                <Col md={6} sm={12} xs={24}>
-                  <NumberInfo
-                    subTitle="筹备中项目"
-                    suffix="个"
-                    total={numeral(245).format('0,0')}
-                  />
-                </Col>
-                <Col md={6} sm={12} xs={24}>
-                  <NumberInfo
-                    subTitle="进行中项目"
-                    suffix="个"
-                    total={numeral(5200).format('0,0')}
-                  />
-                </Col>
-                <Col md={6} sm={12} xs={24}>
-                  <NumberInfo
-                    subTitle="已完成项目"
-                    suffix="个"
-                    total={numeral(1800).format('0,0')}
-                  />
-                </Col>
-              </Row>
-              <div className={styles.mapChart}>
-                <Tooltip title="等待后期实现">
-                  <img
-                    src="https://gw.alipayobjects.com/zos/rmsportal/HBWnDEUXCnGnGrRfrpKa.png"
-                    alt="map"
-                  />
-                </Tooltip>
-              </div>
-            </Card>
-          </Col>
-          <Col xl={6} lg={24} md={24} sm={24} xs={24}>
-            <Card
-              title="已完成项目占比"
-              bodyStyle={{ textAlign: 'center', fontSize: 0 }}
-              bordered={false}
-            >
-              <WaterWave height={161} title="已完成" percent={24} />
-            </Card>
-            <Card
-              className={styles.grade}
-              title="项目完成效率"
-              style={{ marginBottom: 24 }}
-              bodyStyle={{ textAlign: 'center' }}
-              bordered={false}
-            >
-              <Gauge title="完成效率" height={180} percent={65} />
             </Card>
           </Col>
         </Row>
