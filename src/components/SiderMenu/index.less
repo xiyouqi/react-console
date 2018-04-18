@@ -82,21 +82,11 @@
   .ant-menu-dark .ant-menu-inline.ant-menu-sub {
     background: #0495e4;
   }
-  .ant-menu-vertical > .ant-menu-item,
-  .ant-menu-vertical-left > .ant-menu-item,
-  .ant-menu-vertical-right > .ant-menu-item,
-  .ant-menu-inline > .ant-menu-item,
-  .ant-menu-vertical > .ant-menu-submenu > .ant-menu-submenu-title,
-  .ant-menu-vertical-left > .ant-menu-submenu > .ant-menu-submenu-title,
-  .ant-menu-vertical-right > .ant-menu-submenu > .ant-menu-submenu-title,
-  .ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
+  .ant-menu-vertical:not(.ant-menu-sub) > .ant-menu-item,
+  .ant-menu-vertical > .ant-menu-submenu > .ant-menu-submenu-title {
     line-height: 75px;
     height: 75px;
     padding: 0 !important;
-  }
-  .ant-menu-submenu > .ant-menu-sub > .ant-menu-item {
-    line-height: 40px;
-    height: 40px;
   }
   .ant-menu-item > a {
     text-align: center;
