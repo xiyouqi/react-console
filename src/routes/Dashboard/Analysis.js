@@ -11,6 +11,7 @@ import {
   Bar,
   Pie,
   WaterWave,
+  Gauge,
 } from 'components/Charts';
 import Trend from 'components/Trend';
 import NumberInfo from 'components/NumberInfo';
@@ -423,11 +424,20 @@ export default class Analysis extends Component {
           </Col>
           <Col xl={6} lg={24} md={24} sm={24} xs={24}>
             <Card
-              title="项目完成进度"
+              title="已完成项目占比"
               bodyStyle={{ textAlign: 'center', fontSize: 0 }}
               bordered={false}
             >
-              <WaterWave height={161} title="完成进度" percent={24} />
+              <WaterWave height={161} title="已完成" percent={24} />
+            </Card>
+            <Card
+              className={styles.grade}
+              title="项目完成效率"
+              style={{ marginBottom: 24 }}
+              bodyStyle={{ textAlign: 'center' }}
+              bordered={false}
+            >
+              <Gauge title="完成效率" height={180} percent={65} />
             </Card>
           </Col>
         </Row>
