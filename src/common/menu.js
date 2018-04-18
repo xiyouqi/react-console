@@ -46,10 +46,6 @@ const menuData = [
         name: '待建站址库',
         path: 'construction',
       },
-      {
-        name: '失败',
-        path: 'fail',
-      },
     ],
   },
   {
