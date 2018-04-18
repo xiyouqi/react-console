@@ -151,7 +151,7 @@ export default class ProjectList extends PureComponent {
                 <List.Item actions={[<a>编辑</a>, <MoreBtn />]}>
                   <List.Item.Meta
                     avatar={<Avatar src={item.logo} shape="square" size="large" />}
-                    title={<Link to={`/projects/${item.title}`}>{item.title}</Link>}
+                    title={<Link to={`/projects/${item.id}`}>{item.title}</Link>}
                     description={item.subDescription}
                   />
                   <ListContent data={item} />

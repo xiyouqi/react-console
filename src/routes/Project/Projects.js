@@ -10,7 +10,6 @@ export default class Projects extends Component {
 
     const { match, routerData } = this.props;
     const routes = getRoutes(match.path, routerData);
-
     return (
       <Switch>
         {routes.map(item => (
