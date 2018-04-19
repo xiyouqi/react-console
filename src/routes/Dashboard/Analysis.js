@@ -194,8 +194,8 @@ export default class Analysis extends Component {
 
     return (
       <Fragment>
-        <Row gutter={24} className={styles.mapRow}>
-          <Col xl={18} lg={24} md={24} sm={24} xs={24} style={{ marginBottom: 24 }}>
+        <Row gutter={24}>
+          <Col xl={18} lg={24} md={24} sm={24} xs={24}>
             <Card title="项目进行情况" bordered={false}>
               <Row>
                 <Col md={6} sm={12} xs={24}>

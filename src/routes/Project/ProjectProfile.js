@@ -20,9 +20,9 @@ const ButtonGroup = Button.Group;
 
 const menu = (
   <Menu>
-    <Menu.Item key="1">选项一</Menu.Item>
-    <Menu.Item key="2">选项二</Menu.Item>
-    <Menu.Item key="3">选项三</Menu.Item>
+    <Menu.Item key="1">资产核查</Menu.Item>
+    <Menu.Item key="2">审计</Menu.Item>
+    <Menu.Item key="3">后评估</Menu.Item>
   </Menu>
 );
 
@@ -97,7 +97,7 @@ const tabList = [
   },
   {
     key: 'report',
-    tab: '报表',
+    tab: '报告',
   },
 ];
 
