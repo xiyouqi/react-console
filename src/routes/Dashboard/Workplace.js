@@ -2,73 +2,15 @@ import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
-import { Row, Col, Card, List, Avatar } from 'antd';
-
+import { Row, Col, Card, List, Avatar, Table, Badge } from 'antd';
 import { Radar } from 'components/Charts';
-import EditableLinkGroup from 'components/EditableLinkGroup';
+import Trend from 'components/Trend';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 import styles from './Workplace.less';
 
-const links = [
-  {
-    title: '操作一',
-    href: '',
-  },
-  {
-    title: '操作二',
-    href: '',
-  },
-  {
-    title: '操作三',
-    href: '',
-  },
-  {
-    title: '操作四',
-    href: '',
-  },
-  {
-    title: '操作五',
-    href: '',
-  },
-  {
-    title: '操作六',
-    href: '',
-  },
-];
-
-const members = [
-  {
-    id: 'members-1',
-    title: '科学搬砖组',
-    logo: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-    link: '',
-  },
-  {
-    id: 'members-2',
-    title: '程序员日常',
-    logo: 'https://gw.alipayobjects.com/zos/rmsportal/cnrhVkzwxjPwAaCfPbdc.png',
-    link: '',
-  },
-  {
-    id: 'members-3',
-    title: '设计天团',
-    logo: 'https://gw.alipayobjects.com/zos/rmsportal/gaOngJwsRYRaVAuXXcmB.png',
-    link: '',
-  },
-  {
-    id: 'members-4',
-    title: '中二少女团',
-    logo: 'https://gw.alipayobjects.com/zos/rmsportal/ubnKSIfAJTxIgXOKlciN.png',
-    link: '',
-  },
-  {
-    id: 'members-5',
-    title: '骗你学计算机',
-    logo: 'https://gw.alipayobjects.com/zos/rmsportal/WhxKECPNujWoWEFNdnJE.png',
-    link: '',
-  },
-];
+const statusMap = ['default', 'processing', 'success', 'error'];
+const status = ['关闭', '运行中', '已上线', '异常'];
 
 @connect(({ project, activities, chart, loading }) => ({
   project,
@@ -76,6 +18,7 @@ const members = [
   chart,
   projectLoading: loading.effects['project/fetchNotice'],
   activitiesLoading: loading.effects['activities/fetchList'],
+  loading: loading.effects['chart/fetch'],
 }))
 export default class Workplace extends PureComponent {
   componentDidMount() {
@@ -139,7 +82,10 @@ export default class Workplace extends PureComponent {
       projectLoading,
       activitiesLoading,
       chart: { radarData },
+      loading,
+      chart,
     } = this.props;
+    const { searchData } = chart;
 
     const pageHeaderContent = (
       <div className={styles.pageHeaderContent}>
@@ -160,20 +106,70 @@ export default class Workplace extends PureComponent {
       <div className={styles.extraContent}>
         <div className={styles.statItem}>
           <p>项目数</p>
-          <p>56</p>
+          <p style={{ textAlign: 'center' }}>56</p>
         </div>
         <div className={styles.statItem}>
-          <p>团队内排名</p>
-          <p>
-            8<span> / 24</span>
-          </p>
+          <p>未完成任务</p>
+          <p style={{ textAlign: 'center' }}>16</p>
         </div>
         <div className={styles.statItem}>
-          <p>项目访问</p>
-          <p>2,223</p>
+          <p>已完成任务</p>
+          <p style={{ textAlign: 'center' }}>8</p>
         </div>
       </div>
     );
+    const columns = [
+      {
+        title: '序号',
+        dataIndex: 'index',
+        key: 'index',
+      },
+      {
+        title: '项目名称',
+        dataIndex: 'keyword',
+        key: 'keyword',
+        render: text => <a href="/">{text}</a>,
+      },
+      {
+        title: '状态',
+        key: 'count',
+        className: styles.alignRight,
+        dataIndex: 'status',
+        filters: [
+          {
+            text: status[0],
+            value: 0,
+          },
+          {
+            text: status[1],
+            value: 1,
+          },
+          {
+            text: status[2],
+            value: 2,
+          },
+          {
+            text: status[3],
+            value: 3,
+          },
+        ],
+        onFilter: (value, record) => record.status.toString() === value,
+        render(val) {
+          return <Badge status={statusMap[val]} text={status[val]} />;
+        },
+      },
+      {
+        title: '项目进度',
+        dataIndex: 'range',
+        key: 'range',
+        render: text => (
+          <Trend>
+            <span style={{ marginRight: 4 }}>{text}%</span>
+          </Trend>
+        ),
+        align: 'right',
+      },
+    ];
 
     return (
       <PageHeaderLayout content={pageHeaderContent} extraContent={extraContent}>
@@ -201,7 +197,6 @@ export default class Workplace extends PureComponent {
                       description={item.description}
                     />
                     <div className={styles.projectItemContent}>
-                      <Link to={item.memberLink}>{item.member || ''}</Link>
                       {item.updatedAt && (
                         <span className={styles.datetime} title={item.updatedAt}>
                           {moment(item.updatedAt).fromNow()}
@@ -225,36 +220,26 @@ export default class Workplace extends PureComponent {
             </Card>
           </Col>
           <Col xl={8} lg={24} md={24} sm={24} xs={24}>
-            <Card
-              style={{ marginBottom: 24 }}
-              title="快速开始 / 便捷导航"
-              bordered={false}
-              bodyStyle={{ padding: 0 }}
-            >
-              <EditableLinkGroup onAdd={() => {}} links={links} linkElement={Link} />
+            <Card loading={loading} bordered={false} title="项目列表" style={{ marginBottom: 24 }}>
+              <Table
+                rowKey={record => record.index}
+                size="small"
+                columns={columns}
+                dataSource={searchData}
+                pagination={{
+                  style: { marginBottom: 0 },
+                  pageSize: 5,
+                }}
+              />
             </Card>
             <Card
               style={{ marginBottom: 24 }}
               bordered={false}
-              title="XX 指数"
+              title="指数"
               loading={radarData.length === 0}
             >
               <div className={styles.chart}>
                 <Radar hasLegend height={343} data={radarData} />
-              </div>
-            </Card>
-            <Card bodyStyle={{ paddingTop: 12, paddingBottom: 12 }} bordered={false} title="团队">
-              <div className={styles.members}>
-                <Row gutter={48}>
-                  {members.map(item => (
-                    <Col span={12} key={`members-item-${item.id}`}>
-                      <Link to={item.link}>
-                        <Avatar src={item.logo} size="small" />
-                        <span className={styles.member}>{item.title}</span>
-                      </Link>
-                    </Col>
-                  ))}
-                </Row>
               </div>
             </Card>
           </Col>

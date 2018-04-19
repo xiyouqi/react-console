@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
-import { List, Card, Radio, Button, Icon, Dropdown, Menu, Avatar, Select } from 'antd';
-
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import { List, Card, Radio, Button, Icon, Dropdown, Menu, Avatar } from 'antd';
 
 import styles from '../Documention/DocList.less';
 

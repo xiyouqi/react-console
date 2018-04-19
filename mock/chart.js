@@ -32,7 +32,7 @@ const searchData = [];
 for (let i = 0; i < 50; i += 1) {
   searchData.push({
     index: i + 1,
-    keyword: `搜索关键词-${i}`,
+    keyword: `项目${i}`,
     count: Math.floor(Math.random() * 1000),
     range: Math.floor(Math.random() * 100),
     status: Math.floor((Math.random() * 10) % 2),
@@ -129,7 +129,7 @@ for (let i = 0; i < 20; i += 1) {
 
 const radarOriginData = [
   {
-    name: '个人',
+    name: '项目',
     ref: 10,
     koubei: 8,
     output: 4,
@@ -137,7 +137,7 @@ const radarOriginData = [
     hot: 7,
   },
   {
-    name: '团队',
+    name: '绩效',
     ref: 3,
     koubei: 9,
     output: 6,
@@ -145,7 +145,7 @@ const radarOriginData = [
     hot: 1,
   },
   {
-    name: '部门',
+    name: '员工',
     ref: 4,
     koubei: 1,
     output: 6,
@@ -157,11 +157,11 @@ const radarOriginData = [
 //
 const radarData = [];
 const radarTitleMap = {
-  ref: '引用',
-  koubei: '口碑',
-  output: '产量',
-  contribute: '贡献',
-  hot: '热度',
+  ref: '互联网',
+  koubei: '建筑',
+  output: '器材',
+  contribute: '金融',
+  hot: '其他',
 };
 radarOriginData.forEach(item => {
   Object.keys(item).forEach(key => {
