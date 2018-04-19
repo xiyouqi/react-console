@@ -81,6 +81,7 @@ const tabList = [
   {
     key: 'progess',
     tab: '进度',
+    count: 2,
   },
   {
     key: 'cost',
