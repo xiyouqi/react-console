@@ -252,7 +252,7 @@ export default class Analysis extends Component {
             </Card>
           </Col>
         </Row>
-        
+
         <Row gutter={24}>
           <Col {...topColResponsiveProps}>
             <ChartCard

@@ -1,14 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import { routerRedux, Route, Switch, Redirect } from 'dva/router';
-import {
-  Button,
-  Menu,
-  Dropdown,
-  Icon,
-  Row,
-  Col,
-} from 'antd';
+import { Button, Menu, Dropdown, Icon, Row, Col } from 'antd';
 import DescriptionList from 'components/DescriptionList';
 import { getRoutes } from '../../utils/utils';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -16,7 +9,6 @@ import styles from './ProjectProfile.less';
 
 const { Description } = DescriptionList;
 const ButtonGroup = Button.Group;
-
 
 const menu = (
   <Menu>
@@ -103,7 +95,6 @@ const tabList = [
 
 @connect()
 export default class ProjectProfile extends Component {
-
   handleTabChange = key => {
     const { dispatch, match } = this.props;
     switch (key) {
@@ -118,6 +109,12 @@ export default class ProjectProfile extends Component {
         break;
       case 'docs':
         dispatch(routerRedux.push(`${match.url}/docs`));
+        break;
+      case 'cost':
+        dispatch(routerRedux.push(`${match.url}/cost`));
+        break;
+      case 'report':
+        dispatch(routerRedux.push(`${match.url}/report`));
         break;
       default:
         break;
