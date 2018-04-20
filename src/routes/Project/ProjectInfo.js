@@ -8,14 +8,49 @@ const { Description } = DescriptionList;
 
 const progressColumns = [
   {
-    title: '合同名称',
-    dataIndex: 'time',
-    key: 'time',
+    title: '合同号',
+    dataIndex: 'agreementNumber',
+    key: 'agreementNumber',
   },
   {
-    title: '供应商名称',
-    dataIndex: 'rate',
-    key: 'rate',
+    title: '合同编码',
+    dataIndex: 'agreementCode',
+    key: 'agreementCode',
+  },
+  {
+    title: '合同类型',
+    dataIndex: 'agreementType',
+    key: 'agreementType',
+  },
+  {
+    title: '合同金额',
+    dataIndex: 'agreementValue',
+    key: 'agreementValue',
+  },
+  {
+    title: '付款方式',
+    dataIndex: 'payment',
+    key: 'payment',
+  },
+  {
+    title: '交货期',
+    dataIndex: 'deliveryDate',
+    key: 'deliveryDate',
+  },
+  {
+    title: '经办人',
+    dataIndex: 'operator',
+    key: 'operator',
+  },
+  {
+    title: '部门名称',
+    dataIndex: 'department',
+    key: 'department',
+  },
+  {
+    title: '银行信息',
+    dataIndex: 'bankInfo',
+    key: 'bankInfo',
   },
   {
     title: '状态',
@@ -29,14 +64,14 @@ const progressColumns = [
       ),
   },
   {
-    title: '签署部门',
-    dataIndex: 'operator',
-    key: 'operator',
+    title: '签订日期',
+    dataIndex: 'date',
+    key: 'date',
   },
   {
-    title: '签订日期',
-    dataIndex: 'cost',
-    key: 'cost',
+    title: '备注',
+    dataIndex: 'remark',
+    key: 'remark',
   },
 ];
 @connect(({ profile, loading }) => ({
