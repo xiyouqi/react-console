@@ -92,13 +92,19 @@ export default class ProjectInfo extends Component {
         render: renderContent,
       },
       {
+        title: '状态',
+        dataIndex: 'state',
+        key: 'state',
+        render: renderContent,
+      },
+      {
         title: '开始时间',
         dataIndex: 'start',
         key: 'start',
         render: renderContent,
       },
       {
-        title: '到期时间',
+        title: '结束时间',
         dataIndex: 'end',
         key: 'end',
         render: renderContent,
