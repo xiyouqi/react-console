@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import { routerRedux, Route, Switch, Redirect } from 'dva/router';
-import { Button, Menu, Dropdown, Icon, Row, Col, Form, Modal, Input, message} from 'antd';
+import { Button, Menu, Dropdown, Icon, Row, Col, Form, Modal, Input, message, Badge} from 'antd';
 import DescriptionList from 'components/DescriptionList';
 import { getRoutes } from '../../utils/utils';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -68,7 +68,7 @@ const description = (
     <Description term="创建时间">2017-07-07</Description>
     <Description term="合同金额">¥ 5.08 万元</Description>
     <Description term="部门公司">乌鲁木齐</Description>
-    <Description term="项目状态">进行中</Description>
+    <Description term="项目状态"><Badge status="processing" text="进行中" /></Description>
   </DescriptionList>
 );
 
@@ -323,3 +323,4 @@ export default class ProjectProfile extends PureComponent {
     );
   }
 }
+
