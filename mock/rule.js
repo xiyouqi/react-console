@@ -20,7 +20,7 @@ for (let i = 0; i < 46; i += 1) {
     updatedAt: new Date(`2017-07-${Math.floor(i / 2) + 1}`),
     createdAt: new Date(`2017-07-${Math.floor(i / 2) + 1}`),
     progress: Math.ceil(Math.random() * 100),
-    project: `新疆移动2018年二期工程 ${i}`,
+    project: `项目阶段 ${i}`,
     projectCode: 1343457879,
     materielName: `物料 ${i}`,
     type: '金属',

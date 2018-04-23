@@ -1,10 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import {
-  Card,
-  Radio,
-  Divider,
-} from 'antd';
+import { Card, Radio, Divider } from 'antd';
 import StandardTable from 'components/StandardTable';
 
 import styles from './ProjectCost.less';
@@ -21,7 +17,6 @@ const getValue = obj =>
   rule,
   loading: loading.models.rule,
 }))
-
 export default class VendorList extends PureComponent {
   state = {
     selectedRows: [],
@@ -60,7 +55,7 @@ export default class VendorList extends PureComponent {
       payload: params,
     });
   };
-  
+
   render() {
     const { rule: { data }, loading } = this.props;
     const { selectedRows } = this.state;
@@ -77,7 +72,7 @@ export default class VendorList extends PureComponent {
 
     const columns = [
       {
-        title: '所属项目',
+        title: '项目阶段',
         dataIndex: 'project',
       },
       {

@@ -39,6 +39,7 @@ const CreateForm = Form.create()(props => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       form.resetFields();
+
       handleAdd(fieldsValue);
     });
   };

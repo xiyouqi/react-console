@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import { routerRedux, Route, Switch, Redirect } from 'dva/router';
-import { Button, Menu, Dropdown, Icon, Row, Col } from 'antd';
+import { Button, Menu, Dropdown, Icon, Row, Col, Form, Modal, Input, message} from 'antd';
 import DescriptionList from 'components/DescriptionList';
 import { getRoutes } from '../../utils/utils';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -9,6 +9,36 @@ import styles from './ProjectProfile.less';
 
 const { Description } = DescriptionList;
 const ButtonGroup = Button.Group;
+const FormItem = Form.Item;
+const getValue = obj =>
+  Object.keys(obj)
+    .map(key => obj[key])
+    .join(',');
+const CreateForm = Form.create()(props => {
+  const { modalVisible, form, handleAdd, handleModalVisible } = props;
+  const okHandle = () => {
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      form.resetFields();
+      handleAdd(fieldsValue);
+    });
+  };
+  return (
+    
+    <Modal
+      title="新建规则"
+      visible={modalVisible}
+      onOk={okHandle}
+      onCancel={() => handleModalVisible()}
+    >
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="描述">
+        {form.getFieldDecorator('desc', {
+          rules: [{ required: true, message: 'Please input some description...' }],
+        })(<Input placeholder="请输入" />)}
+      </FormItem>
+    </Modal>
+  );
+});
 
 const menu = (
   <Menu>
@@ -16,21 +46,6 @@ const menu = (
     <Menu.Item key="2">审计</Menu.Item>
     <Menu.Item key="3">后评估</Menu.Item>
   </Menu>
-);
-
-const action = (
-  <Fragment>
-    <ButtonGroup>
-      <Button>交维申请</Button>
-      <Button>审计申请</Button>
-      <Dropdown overlay={menu} placement="bottomRight">
-        <Button>
-          <Icon type="ellipsis" />
-        </Button>
-      </Dropdown>
-    </ButtonGroup>
-    <Button type="primary">转资申请</Button>
-  </Fragment>
 );
 
 const extra = (
@@ -93,8 +108,26 @@ const tabList = [
   },
 ];
 
-@connect()
-export default class ProjectProfile extends Component {
+@connect(({ rule, loading }) => ({
+  rule,
+  loading: loading.models.rule,
+}))
+@Form.create()
+export default class ProjectProfile extends PureComponent {
+  state = {
+    modalVisible: false,
+    expandForm: false,
+    selectedRows: [],
+    formValues: {},
+  };
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'rule/fetch',
+    });
+  }
+
   handleTabChange = key => {
     const { dispatch, match } = this.props;
     switch (key) {
@@ -120,10 +153,151 @@ export default class ProjectProfile extends Component {
         break;
     }
   };
+ 
+  handleStandardTableChange = (pagination, filtersArg, sorter) => {
+    const { dispatch } = this.props;
+    const { formValues } = this.state;
+
+    const filters = Object.keys(filtersArg).reduce((obj, key) => {
+      const newObj = { ...obj };
+      newObj[key] = getValue(filtersArg[key]);
+      return newObj;
+    }, {});
+
+    const params = {
+      currentPage: pagination.current,
+      pageSize: pagination.pageSize,
+      ...formValues,
+      ...filters,
+    };
+    if (sorter.field) {
+      params.sorter = `${sorter.field}_${sorter.order}`;
+    }
+
+    dispatch({
+      type: 'rule/fetch',
+      payload: params,
+    });
+  };
+
+  handleFormReset = () => {
+    const { form, dispatch } = this.props;
+    form.resetFields();
+    this.setState({
+      formValues: {},
+    });
+    dispatch({
+      type: 'rule/fetch',
+      payload: {},
+    });
+  };
+
+  toggleForm = () => {
+    this.setState({
+      expandForm: !this.state.expandForm,
+    });
+  };
+
+  handleMenuClick = e => {
+    const { dispatch } = this.props;
+    const { selectedRows } = this.state;
+
+    if (!selectedRows) return;
+
+    switch (e.key) {
+      case 'remove':
+        dispatch({
+          type: 'rule/remove',
+          payload: {
+            no: selectedRows.map(row => row.no).join(','),
+          },
+          callback: () => {
+            this.setState({
+              selectedRows: [],
+            });
+          },
+        });
+        break;
+      default:
+        break;
+    }
+  };
+
+  handleSelectRows = rows => {
+    this.setState({
+      selectedRows: rows,
+    });
+  };
+
+  handleSearch = e => {
+    e.preventDefault();
+
+    const { dispatch, form } = this.props;
+
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+
+      const values = {
+        ...fieldsValue,
+        updatedAt: fieldsValue.updatedAt && fieldsValue.updatedAt.valueOf(),
+      };
+
+      this.setState({
+        formValues: values,
+      });
+
+      dispatch({
+        type: 'rule/fetch',
+        payload: values,
+      });
+    });
+  };
+
+  handleModalVisible = flag => {
+    this.setState({
+      modalVisible: !!flag,
+    });
+  };
+
+  handleAdd = fields => {
+    this.props.dispatch({
+      type: 'rule/add',
+      payload: {
+        description: fields.desc,
+      },
+    });
+
+    message.success('添加成功');
+    this.setState({
+      modalVisible: false,
+    });
+  };
+
 
   render() {
     const { match, routerData, location } = this.props;
+    const { modalVisible } = this.state;
     const routes = getRoutes(match.path, routerData);
+    
+    const parentMethods = {
+      handleAdd: this.handleAdd,
+      handleModalVisible: this.handleModalVisible,
+    };
+
+    const action = (
+      <Fragment>
+        <ButtonGroup>
+          <Button>交维申请</Button>
+          <Button>审计申请</Button>
+          <Dropdown overlay={menu} placement="bottomRight">
+            <Button>
+              <Icon type="ellipsis" />
+            </Button>
+          </Dropdown>
+        </ButtonGroup>
+        <Button type="primary" onClick={() => this.handleModalVisible(true)}>转资申请</Button>
+      </Fragment>
+    );
 
     return (
       <PageHeaderLayout
@@ -144,6 +318,7 @@ export default class ProjectProfile extends Component {
           ))}
           <Redirect from="/" to={`/projects/${match.params.id}/info`} />
         </Switch>
+        <CreateForm {...parentMethods} modalVisible={modalVisible} />
       </PageHeaderLayout>
     );
   }

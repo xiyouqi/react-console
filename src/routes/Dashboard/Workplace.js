@@ -2,8 +2,7 @@ import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
-import { Row, Col, Card, List, Avatar, Table, Badge } from 'antd';
-import { Radar } from 'components/Charts';
+import { Row, Col, Card, List, Avatar, Table, Badge, Calendar } from 'antd';
 import Trend from 'components/Trend';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
@@ -11,7 +10,32 @@ import styles from './Workplace.less';
 
 const statusMap = ['default', 'processing', 'success', 'error'];
 const status = ['关闭', '运行中', '已上线', '异常'];
-
+const getListData = value => {
+  let listData;
+  switch (value.date()) {
+    case 8:
+      listData = [{ type: 'warning', content: '任务1' }, { type: 'success', content: '任务2' }];
+      break;
+    case 10:
+      listData = [
+        { type: 'warning', content: '任务3' },
+        { type: 'success', content: '任务4' },
+        { type: 'error', content: '任务5' },
+      ];
+      break;
+    case 15:
+      listData = [
+        { type: 'warning', content: '任务3' },
+        { type: 'success', content: '任务4' },
+        { type: 'error', content: '任务5' },
+        { type: 'warning', content: '任务1' },
+        { type: 'success', content: '任务2' },
+      ];
+      break;
+    default:
+  }
+  return listData || [];
+};
 @connect(({ project, activities, chart, loading }) => ({
   project,
   activities,
@@ -21,6 +45,25 @@ const status = ['关闭', '运行中', '已上线', '异常'];
   loading: loading.effects['chart/fetch'],
 }))
 export default class Workplace extends PureComponent {
+  static getMonthData(value) {
+    if (value.month() === 8) {
+      return 1394;
+    }
+  }
+
+  static dateCellRender(value) {
+    const listData = getListData(value);
+    return (
+      <ul className={styles.events}>
+        {listData.map(item => (
+          <li key={item.content}>
+            <Badge status={item.type} text={item.content} />
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -39,6 +82,16 @@ export default class Workplace extends PureComponent {
     dispatch({
       type: 'chart/clear',
     });
+  }
+
+  monthCellRender(value) {
+    const num = this.getMonthData(value);
+    return num ? (
+      <div className={styles.notesMonth}>
+        <section>{num}</section>
+        <span>Backlog number</span>
+      </div>
+    ) : null;
   }
 
   renderActivities() {
@@ -77,14 +130,7 @@ export default class Workplace extends PureComponent {
   }
 
   render() {
-    const {
-      project: { notice },
-      projectLoading,
-      activitiesLoading,
-      chart: { radarData },
-      loading,
-      chart,
-    } = this.props;
+    const { project: { notice }, projectLoading, activitiesLoading, loading, chart } = this.props;
     const { searchData } = chart;
 
     const pageHeaderContent = (
@@ -207,16 +253,12 @@ export default class Workplace extends PureComponent {
                 </Card.Grid>
               ))}
             </Card>
-            <Card
-              bodyStyle={{ padding: 0 }}
-              bordered={false}
-              className={styles.activeCard}
-              title="动态"
-              loading={activitiesLoading}
-            >
-              <List loading={activitiesLoading} size="large">
-                <div className={styles.activitiesList}>{this.renderActivities()}</div>
-              </List>
+
+            <Card title="日历">
+              <Calendar
+                dateCellRender={this.dateCellRender}
+                monthCellRender={this.monthCellRender}
+              />
             </Card>
           </Col>
           <Col xl={8} lg={24} md={24} sm={24} xs={24}>
@@ -233,14 +275,15 @@ export default class Workplace extends PureComponent {
               />
             </Card>
             <Card
-              style={{ marginBottom: 24 }}
+              bodyStyle={{ padding: 0 }}
               bordered={false}
-              title="指数"
-              loading={radarData.length === 0}
+              className={styles.activeCard}
+              title="动态"
+              loading={activitiesLoading}
             >
-              <div className={styles.chart}>
-                <Radar hasLegend height={343} data={radarData} />
-              </div>
+              <List loading={activitiesLoading} size="large">
+                <div className={styles.activitiesList}>{this.renderActivities()}</div>
+              </List>
             </Card>
           </Col>
         </Row>

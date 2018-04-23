@@ -117,7 +117,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['list'], () => import('../routes/Project/ProjectList')),
     },
     '/projects/:id': {
-      component: dynamicWrapper(app, ['profile'], () => import('../routes/Project/ProjectProfile')),
+      component: dynamicWrapper(app, ['rule'], () => import('../routes/Project/ProjectProfile')),
     },
     '/projects/:id/info': {
       component: dynamicWrapper(app, ['profile'], () => import('../routes/Project/ProjectInfo')),
@@ -133,6 +133,9 @@ export const getRouterData = app => {
     },
     '/projects/:id/cost': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/Project/ProjectCost')),
+    },
+    '/projects/:id/content': {
+      component: dynamicWrapper(app, ['list'], () => import('../routes/Project/ProjectContent')),
     },
     '/docs': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/Documention/DocList')),
