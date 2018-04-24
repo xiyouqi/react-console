@@ -45,13 +45,11 @@ const plainOptions = [
   '资产账簿与资产类别不一致不允许转资',
   '在建项目账户不带工程段不允许转资',
   '未统一维护工程物资的物料不能形成资产',
-  '未统一维护工程物资的物料不能转资',
   '不允许手工新增资产',
   '按资产数量分摊',
   '按资产价值分摊',
   '转资确认由项目经理完成',
   '资产模型增加按采购成本控制资产区间',
-  '未统一维护工程物资的物料不能形成资产',
   '未统一维护工程物资的物料不能转资',
 ];
 const defaultCheckedList = [
@@ -68,7 +66,6 @@ const data = [];
 for (let i = 0; i < 100; i += 1) {
   data.push({
     key: i.toString(),
-    parjectCode: `334355${i}`,
     materielName: `物料 ${i}`,
     materielCode: `123444${i}`,
     number: `1${i}`,
@@ -92,12 +89,6 @@ export default class StepForm extends PureComponent {
     super(props);
     this.columns = [
       {
-        title: '项目编码',
-        dataIndex: 'parjectCode',
-        width: '20%',
-        render: (text, record) => this.renderColumns(text, record, 'parjectCode'),
-      },
-      {
         title: '物料名称',
         dataIndex: 'materielName',
         width: '20%',
@@ -112,19 +103,19 @@ export default class StepForm extends PureComponent {
       {
         title: '数量 (个)',
         dataIndex: 'number',
-        width: '10%',
+        width: '15%',
         render: (text, record) => this.renderColumns(text, record, 'number'),
       },
       {
         title: '单价 (元)',
         dataIndex: 'price',
-        width: '10%',
+        width: '15%',
         render: (text, record) => this.renderColumns(text, record, 'price'),
       },
       {
         title: '总计 (元)',
         dataIndex: 'total',
-        width: '10%',
+        width: '15%',
         render: (text, record) => this.renderColumns(text, record, 'total'),
       },
       {
@@ -260,6 +251,7 @@ export default class StepForm extends PureComponent {
             extra={extra}
             actions={actions}
             style={{ width: '100%' }}
+            rowKey="materielName"
           />
         </Card>
       </div>

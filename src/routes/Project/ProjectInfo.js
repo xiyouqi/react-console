@@ -10,52 +10,42 @@ const progressColumns = [
   {
     title: '合同号',
     dataIndex: 'agreementNumber',
-    key: 'agreementNumber',
   },
   {
     title: '合同编码',
     dataIndex: 'agreementCode',
-    key: 'agreementCode',
   },
   {
     title: '合同类型',
     dataIndex: 'agreementType',
-    key: 'agreementType',
   },
   {
     title: '合同金额',
     dataIndex: 'agreementValue',
-    key: 'agreementValue',
   },
   {
     title: '付款方式',
     dataIndex: 'payment',
-    key: 'payment',
   },
   {
     title: '交货期',
     dataIndex: 'deliveryDate',
-    key: 'deliveryDate',
   },
   {
     title: '经办人',
     dataIndex: 'operator',
-    key: 'operator',
   },
   {
     title: '部门名称',
     dataIndex: 'department',
-    key: 'department',
   },
   {
     title: '银行信息',
     dataIndex: 'bankInfo',
-    key: 'bankInfo',
   },
   {
     title: '状态',
     dataIndex: 'status',
-    key: 'status',
     render: text =>
       text === 'success' ? (
         <Badge status="success" text="成功" />
@@ -66,12 +56,10 @@ const progressColumns = [
   {
     title: '签订日期',
     dataIndex: 'date',
-    key: 'date',
   },
   {
     title: '备注',
     dataIndex: 'remark',
-    key: 'remark',
   },
 ];
 @connect(({ profile, loading }) => ({
@@ -107,41 +95,34 @@ export default class ProjectInfo extends Component {
       {
         title: '项目阶段',
         dataIndex: 'id',
-        key: 'id',
       },
       {
         title: '项目负责部门',
         dataIndex: 'department',
-        key: 'department',
       },
       {
         title: '项目负责人',
         dataIndex: 'name',
-        key: 'name',
         render: renderContent,
       },
       {
         title: '其他成员',
         dataIndex: 'other',
-        key: 'other',
         render: renderContent,
       },
       {
         title: '状态',
         dataIndex: 'state',
-        key: 'state',
         render: renderContent,
       },
       {
         title: '开始时间',
         dataIndex: 'start',
-        key: 'start',
         render: renderContent,
       },
       {
         title: '结束时间',
         dataIndex: 'end',
-        key: 'end',
         render: renderContent,
       },
     ];
@@ -162,7 +143,7 @@ export default class ProjectInfo extends Component {
           loading={loading}
           dataSource={goodsData}
           columns={goodsColumns}
-          rowKey="id"
+          rowKey="department"
         />
         <div className={styles.title}>项目合同</div>
         <Table
@@ -171,6 +152,7 @@ export default class ProjectInfo extends Component {
           loading={loading}
           dataSource={basicProgress}
           columns={progressColumns}
+          rowKey="agreementNumber"
         />
       </Card>
     );
