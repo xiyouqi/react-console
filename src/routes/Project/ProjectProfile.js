@@ -1,44 +1,20 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import { routerRedux, Route, Switch, Redirect } from 'dva/router';
-import { Button, Menu, Dropdown, Icon, Row, Col, Form, Modal, Input, message, Badge} from 'antd';
+import { Button, Menu, Dropdown, Icon, Row, Col, Form, message, Badge } from 'antd';
 import DescriptionList from 'components/DescriptionList';
 import { getRoutes } from '../../utils/utils';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import StepForm from './StepForm';
 import styles from './ProjectProfile.less';
 
 const { Description } = DescriptionList;
 const ButtonGroup = Button.Group;
-const FormItem = Form.Item;
+
 const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-const CreateForm = Form.create()(props => {
-  const { modalVisible, form, handleAdd, handleModalVisible } = props;
-  const okHandle = () => {
-    form.validateFields((err, fieldsValue) => {
-      if (err) return;
-      form.resetFields();
-      handleAdd(fieldsValue);
-    });
-  };
-  return (
-    
-    <Modal
-      title="新建规则"
-      visible={modalVisible}
-      onOk={okHandle}
-      onCancel={() => handleModalVisible()}
-    >
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="描述">
-        {form.getFieldDecorator('desc', {
-          rules: [{ required: true, message: 'Please input some description...' }],
-        })(<Input placeholder="请输入" />)}
-      </FormItem>
-    </Modal>
-  );
-});
 
 const menu = (
   <Menu>
@@ -68,7 +44,9 @@ const description = (
     <Description term="创建时间">2017-07-07</Description>
     <Description term="合同金额">¥ 5.08 万元</Description>
     <Description term="部门公司">乌鲁木齐</Description>
-    <Description term="项目状态"><Badge status="processing" text="进行中" /></Description>
+    <Description term="项目状态">
+      <Badge status="processing" text="进行中" />
+    </Description>
   </DescriptionList>
 );
 
@@ -114,6 +92,13 @@ const tabList = [
 }))
 @Form.create()
 export default class ProjectProfile extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      current: 0,
+    };
+  }
+
   state = {
     modalVisible: false,
     expandForm: false,
@@ -153,7 +138,7 @@ export default class ProjectProfile extends PureComponent {
         break;
     }
   };
- 
+
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
     const { dispatch } = this.props;
     const { formValues } = this.state;
@@ -273,15 +258,25 @@ export default class ProjectProfile extends PureComponent {
     });
   };
 
+  next() {
+    const current = this.state.current + 1;
+    this.setState({ current });
+  }
+  prev() {
+    const current = this.state.current - 1;
+    this.setState({ current });
+  }
 
   render() {
+    const { current } = this.state;
     const { match, routerData, location } = this.props;
     const { modalVisible } = this.state;
     const routes = getRoutes(match.path, routerData);
-    
+
     const parentMethods = {
       handleAdd: this.handleAdd,
       handleModalVisible: this.handleModalVisible,
+      current,
     };
 
     const action = (
@@ -295,7 +290,9 @@ export default class ProjectProfile extends PureComponent {
             </Button>
           </Dropdown>
         </ButtonGroup>
-        <Button type="primary" onClick={() => this.handleModalVisible(true)}>转资申请</Button>
+        <Button type="primary" onClick={() => this.handleModalVisible(true)}>
+          转资申请
+        </Button>
       </Fragment>
     );
 
@@ -318,9 +315,9 @@ export default class ProjectProfile extends PureComponent {
           ))}
           <Redirect from="/" to={`/projects/${match.params.id}/info`} />
         </Switch>
-        <CreateForm {...parentMethods} modalVisible={modalVisible} />
+
+        <StepForm {...parentMethods} modalVisible={modalVisible} />
       </PageHeaderLayout>
     );
   }
 }
-
