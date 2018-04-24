@@ -118,7 +118,7 @@ export default class VendorList extends PureComponent {
       {
         title: '操作',
         render: () => (
-          <Fragment style={{ paddingLeft: '0' }}>
+          <Fragment>
             <a href="#">编辑</a>
             <Divider type="vertical" />
             <a href="#">删除</a>
@@ -136,6 +136,7 @@ export default class VendorList extends PureComponent {
             columns={columns}
             onSelectRow={this.handleSelectRows}
             onChange={this.handleStandardTableChange}
+            rowKey="materielName"
           />
         </div>
       </Card>
