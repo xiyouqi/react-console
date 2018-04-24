@@ -10,6 +10,7 @@ const progressColumns = [
   {
     title: '合同号',
     dataIndex: 'agreementNumber',
+    key: 'agreementNumber',
   },
   {
     title: '合同编码',
@@ -95,6 +96,7 @@ export default class ProjectInfo extends Component {
       {
         title: '项目阶段',
         dataIndex: 'id',
+        key: 'id',
       },
       {
         title: '项目负责部门',
@@ -143,7 +145,7 @@ export default class ProjectInfo extends Component {
           loading={loading}
           dataSource={goodsData}
           columns={goodsColumns}
-          rowKey="department"
+          rowKey="id"
         />
         <div className={styles.title}>项目合同</div>
         <Table
