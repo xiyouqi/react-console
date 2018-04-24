@@ -36,6 +36,36 @@ const getListData = value => {
   }
   return listData || [];
 };
+
+const getMonthData = value => {
+  if (value.month() === 8) {
+    return 1394;
+  }
+};
+
+const monthCellRender = value => {
+  const num = getMonthData(value);
+  return num ? (
+    <div className={styles.notesMonth}>
+      {/* <section>{num}</section>
+      <span>Backlog number</span> */}
+    </div>
+  ) : null;
+};
+
+const dateCellRender = value => {
+  const listData = getListData(value);
+  return (
+    <ul className={styles.events}>
+      {listData.map(item => (
+        <li key={item.content}>
+          <Badge status={item.type} text={item.content} />
+        </li>
+      ))}
+    </ul>
+  );
+};
+
 @connect(({ project, activities, chart, loading }) => ({
   project,
   activities,
@@ -45,25 +75,6 @@ const getListData = value => {
   loading: loading.effects['chart/fetch'],
 }))
 export default class Workplace extends PureComponent {
-  static getMonthData(value) {
-    if (value.month() === 8) {
-      return 1394;
-    }
-  }
-
-  static dateCellRender(value) {
-    const listData = getListData(value);
-    return (
-      <ul className={styles.events}>
-        {listData.map(item => (
-          <li key={item.content}>
-            <Badge status={item.type} text={item.content} />
-          </li>
-        ))}
-      </ul>
-    );
-  }
-
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -82,16 +93,6 @@ export default class Workplace extends PureComponent {
     dispatch({
       type: 'chart/clear',
     });
-  }
-
-  monthCellRender(value) {
-    const num = this.getMonthData(value);
-    return num ? (
-      <div className={styles.notesMonth}>
-        <section>{num}</section>
-        <span>Backlog number</span>
-      </div>
-    ) : null;
   }
 
   renderActivities() {
@@ -255,10 +256,7 @@ export default class Workplace extends PureComponent {
             </Card>
 
             <Card title="日历">
-              <Calendar
-                dateCellRender={this.dateCellRender}
-                monthCellRender={this.monthCellRender}
-              />
+              <Calendar dateCellRender={dateCellRender} monthCellRender={monthCellRender} />
             </Card>
           </Col>
           <Col xl={8} lg={24} md={24} sm={24} xs={24}>

@@ -2,7 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import { Row, Col, Card, Tooltip, Icon } from 'antd';
 import numeral from 'numeral';
-import { Field, ChartCard, MiniProgress, Gauge, WaterWave} from 'components/Charts';
+import { Field, ChartCard, MiniProgress, Gauge} from 'components/Charts';
 import Trend from 'components/Trend';
 import { getTimeDistance } from '../../utils/utils';
 import styles from './ProjectReport.less';
@@ -143,38 +143,6 @@ export default class Monitor extends PureComponent {
             >
               <MiniProgress percent={0.68} strokeWidth={8} target={80} color="#13C2C2" />
             </ChartCard>
-          </Col>
-        </Row>
-        <Row gutter={24} style={{ marginTop: 24 }}>
-          <Col xl={18} lg={24} sm={24} xs={24}>
-            <Card title="各部门占比" bordered={false} className={styles.pieCard}>
-              <Row style={{ padding: '16px 0' }}>
-                <Col span={8}>
-                  <Card
-                    bodyStyle={{ textAlign: 'center', fontSize: 0 }}
-                    bordered={false}
-                  >
-                    <WaterWave height={161} title="部门1" percent={34} />
-                  </Card>
-                </Col>
-                <Col span={8}>
-                  <Card
-                    bodyStyle={{ textAlign: 'center', fontSize: 0 }}
-                    bordered={false}
-                  >
-                    <WaterWave height={161} title="部门2" percent={24} />
-                  </Card>
-                </Col>
-                <Col span={8}>
-                  <Card
-                    bodyStyle={{ textAlign: 'center', fontSize: 0 }}
-                    bordered={false}
-                  >
-                    <WaterWave height={161} title="部门3" percent={42} />
-                  </Card>
-                </Col>
-              </Row>
-            </Card>
           </Col>
         </Row>
         {/* <Row gutter={24} style={{ marginTop: 24 }}>
