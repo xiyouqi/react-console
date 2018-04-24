@@ -32,9 +32,12 @@ const proxy = {
   'GET /api/users': [
     {
       key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
+      parjectCode: '23434554',
+      materielName: '物料1',
+      materielCode: '2384048',
+      number: 12,
+      price: 10,
+      total: 120,
     },
     {
       key: '2',

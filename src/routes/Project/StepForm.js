@@ -1,9 +1,40 @@
 import React, { PureComponent, Fragment } from 'react';
-import { Button, Modal, message, Form, Input, Row, Col, Checkbox, Table, Popconfirm } from 'antd';
-import { routerRedux } from 'dva/router';
+import {
+  Button,
+  Modal,
+  message,
+  Form,
+  Input,
+  Checkbox,
+  Table,
+  Popconfirm,
+  Steps,
+  Card,
+} from 'antd';
+import Result from 'components/Result';
 
 import styles from './StepForm.less';
 
+const { Step } = Steps;
+
+const extra = (
+  <Fragment>
+    <Steps style={{ marginLeft: -42, width: 'calc(100% + 84px)' }} progressDot current={1}>
+      <Step title={<span style={{ fontSize: 14 }}>创建项目</span>} />
+      <Step title={<span style={{ fontSize: 14 }}>部门初审</span>} />
+      <Step title={<span style={{ fontSize: 14 }}>财务复核</span>} />
+      <Step title={<span style={{ fontSize: 14 }}>完成</span>} />
+    </Steps>
+  </Fragment>
+);
+
+const actions = (
+  <Fragment>
+    <Button type="primary">返回列表</Button>
+    <Button>查看项目</Button>
+    <Button>打 印</Button>
+  </Fragment>
+);
 const CheckboxGroup = Checkbox.Group;
 const plainOptions = [
   '资产类别失效不允许转资',
@@ -37,9 +68,12 @@ const data = [];
 for (let i = 0; i < 100; i += 1) {
   data.push({
     key: i.toString(),
-    name: `Edrward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
+    parjectCode: `334355${i}`,
+    materielName: `物料 ${i}`,
+    materielCode: `123444${i}`,
+    number: `1${i}`,
+    price: `11${i}`,
+    total: `4000`,
   });
 }
 
@@ -58,26 +92,44 @@ export default class StepForm extends PureComponent {
     super(props);
     this.columns = [
       {
-        title: 'name',
-        dataIndex: 'name',
-        width: '25%',
-        render: (text, record) => this.renderColumns(text, record, 'name'),
+        title: '项目编码',
+        dataIndex: 'parjectCode',
+        width: '20%',
+        render: (text, record) => this.renderColumns(text, record, 'parjectCode'),
       },
       {
-        title: 'age',
-        dataIndex: 'age',
-        width: '15%',
-        render: (text, record) => this.renderColumns(text, record, 'age'),
+        title: '物料名称',
+        dataIndex: 'materielName',
+        width: '20%',
+        render: (text, record) => this.renderColumns(text, record, 'materielName'),
       },
       {
-        title: 'address',
-        dataIndex: 'address',
-        width: '40%',
-        render: (text, record) => this.renderColumns(text, record, 'address'),
+        title: '物料编码',
+        dataIndex: 'materielCode',
+        width: '20%',
+        render: (text, record) => this.renderColumns(text, record, 'materielCode'),
       },
       {
-        title: 'operation',
-        dataIndex: 'operation',
+        title: '数量 (个)',
+        dataIndex: 'number',
+        width: '10%',
+        render: (text, record) => this.renderColumns(text, record, 'number'),
+      },
+      {
+        title: '单价 (元)',
+        dataIndex: 'price',
+        width: '10%',
+        render: (text, record) => this.renderColumns(text, record, 'price'),
+      },
+      {
+        title: '总计 (元)',
+        dataIndex: 'total',
+        width: '10%',
+        render: (text, record) => this.renderColumns(text, record, 'total'),
+      },
+      {
+        title: '操作',
+        dataIndex: '操作',
         render: (text, record) => {
           const { editable } = record;
           return (
@@ -97,15 +149,14 @@ export default class StepForm extends PureComponent {
         },
       },
     ];
-    this.state = { data };
+    this.state = {
+      data,
+      current: 0,
+      checkAll: false,
+      checkedList: defaultCheckedList,
+    };
     this.cacheData = data.map(item => ({ ...item }));
   }
-
-  state = {
-    checkedList: defaultCheckedList,
-    indeterminate: true,
-    checkAll: false,
-  };
 
   onChange = checkedList => {
     this.setState({
@@ -155,6 +206,13 @@ export default class StepForm extends PureComponent {
       this.setState({ data: newData });
     }
   }
+
+  next(add) {
+    this.setState({
+      current: this.state.current + add,
+    });
+  }
+
   renderColumns(text, record, column) {
     return (
       <EditableCell
@@ -166,22 +224,17 @@ export default class StepForm extends PureComponent {
   }
 
   render() {
-    const { modalVisible, form, handleAdd, handleModalVisible, current, dispatch } = this.props;
-    const onFinish = () => {
-      dispatch(routerRedux.push('/form/step-form'));
-    };
-    const okHandle = () => {
-      form.validateFields((err, fieldsValue) => {
-        if (err) return;
-        form.resetFields();
-        handleAdd(fieldsValue);
-      });
-    };
+    const { modalVisible, handleModalVisible } = this.props;
 
     const stepFirst = (
       <div>
+        <CheckboxGroup
+          options={plainOptions}
+          value={this.state.checkedList}
+          onChange={this.onChange}
+        />
         <div
-          style={{ borderBottom: '1px solid #E9E9E9', paddingBottom: 8 }}
+          style={{ borderTop: '1px solid #E9E9E9', padding: '8px 0', marginTop: 8 }}
           className={styles.steps}
         >
           <Checkbox
@@ -192,51 +245,23 @@ export default class StepForm extends PureComponent {
             选择全部
           </Checkbox>
         </div>
-        <br />
-        <CheckboxGroup
-          options={plainOptions}
-          value={this.state.checkedList}
-          onChange={this.onChange}
-        />
       </div>
     );
 
     const stepSecond = <Table bordered dataSource={this.state.data} columns={this.columns} />;
 
     const stepThird = (
-      <div className={styles.information}>
-        <Row>
-          <Col span={8} className={styles.label}>
-            付款账户：
-          </Col>
-          <Col span={16}>{data.payAccount}</Col>
-        </Row>
-        <Row>
-          <Col span={8} className={styles.label}>
-            收款账户：
-          </Col>
-          <Col span={16}>{data.receiverAccount}</Col>
-        </Row>
-        <Row>
-          <Col span={8} className={styles.label}>
-            收款人姓名：
-          </Col>
-          <Col span={16}>{data.receiverName}</Col>
-        </Row>
-        <Row>
-          <Col span={8} className={styles.label}>
-            转账金额：
-          </Col>
-          <Col span={16}>
-            <span className={styles.money}>{data.amount}</span> 元
-          </Col>
-        </Row>
-        <Fragment>
-          <Button type="primary" onClick={onFinish}>
-            再转一笔
-          </Button>
-          <Button>查看账单</Button>
-        </Fragment>
+      <div>
+        <Card bordered={false}>
+          <Result
+            type="success"
+            title="提交成功"
+            description="已提交 ERP 系统，请等待。"
+            extra={extra}
+            actions={actions}
+            style={{ width: '100%' }}
+          />
+        </Card>
       </div>
     );
 
@@ -255,32 +280,44 @@ export default class StepForm extends PureComponent {
       },
     ];
 
+    const modalFooter = (
+      <div>
+        {this.state.current > 0 && (
+          <Button style={{ marginLeft: 8 }} onClick={() => this.next(-1)}>
+            上一步
+          </Button>
+        )}
+        {this.state.current < steps.length - 1 && (
+          <Button type="primary" onClick={() => this.next(1)}>
+            下一步
+          </Button>
+        )}
+        {this.state.current === steps.length - 1 && (
+          <Button type="primary" onClick={() => message.success('完成!')}>
+            完成
+          </Button>
+        )}
+        <Button style={{ marginLeft: 8 }} onClick={() => handleModalVisible()}>
+          取消
+        </Button>
+      </div>
+    );
+
     return (
       <Modal
-        title="转资规则"
+        title="转资申请"
         visible={modalVisible}
-        onOk={okHandle}
+        width={1000}
         onCancel={() => handleModalVisible()}
-        style={{ width: 1000 }}
+        footer={modalFooter}
       >
-        <div className="steps-content">{steps[1].content}</div>
-        <div className="steps-action">
-          {current < steps.length - 1 && (
-            <Button type="primary" onClick={() => this.next()}>
-              Next
-            </Button>
-          )}
-          {current === steps.length - 1 && (
-            <Button type="primary" onClick={() => message.success('Processing complete!')}>
-              Done
-            </Button>
-          )}
-          {current > 0 && (
-            <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
-              Previous
-            </Button>
-          )}
-        </div>
+        <Steps current={this.state.current} className={styles.steps}>
+          <Step title="转资便利化配置" />
+          <Step title="待转资列表" />
+          <Step title="提交 ERP 系统" />
+          <Step title="完成" />
+        </Steps>
+        <div className={styles.stepsContent}>{steps[this.state.current].content}</div>
       </Modal>
     );
   }

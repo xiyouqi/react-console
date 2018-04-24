@@ -2,7 +2,6 @@
 
 .stepForm {
   margin: 40px auto 0;
-  max-width: 500px;
 }
 
 .stepFormText {
@@ -15,10 +14,23 @@
   }
 }
 
+.stepsContent {
+  :global{
+    .ant-checkbox-group-item{
+      margin-bottom: 16px;
+      display: inline-block;
+      margin-right: 0;
+      width: 33.33%;
+    }
+  }
+  height: 400px;
+  overflow-y: auto;
+}
+
 .result {
   margin: 0 auto;
-  max-width: 560px;
   padding: 24px 0 8px;
+  width: 100%;
 }
 
 .desc {
@@ -42,13 +54,8 @@
     line-height: 22px;
   }
 }
-.steps{
-  :global{
-    .ant-checkbox-group-item{
-      margin-bottom: 8px;
-      display: block;
-    }
-  }
+.steps {
+  margin-bottom: 40px;
 }
 
 
