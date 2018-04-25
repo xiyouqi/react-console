@@ -1,13 +1,15 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Tooltip, Icon } from 'antd';
+import { Row, Col, Card, Tooltip, Icon, Tabs } from 'antd';
 import numeral from 'numeral';
-import { Field, ChartCard, MiniProgress, Gauge} from 'components/Charts';
+import { Field, ChartCard, MiniProgress, Gauge, Bar } from 'components/Charts';
 import Trend from 'components/Trend';
 import { getTimeDistance } from '../../utils/utils';
 import styles from './ProjectReport.less';
 
+const { TabPane } = Tabs;
 const rankingListData = [];
+
 for (let i = 0; i < 7; i += 1) {
   rankingListData.push({
     title: `工专路 ${i} 号店`,
@@ -15,14 +17,18 @@ for (let i = 0; i < 7; i += 1) {
   });
 }
 
-@connect(({ monitor, loading }) => ({
-  monitor,
-  loading: loading.models.monitor,
+@connect(({ chart, loading }) => ({
+  chart,
+  loading: loading.effects['chart/fetch'],
 }))
-export default class Monitor extends PureComponent {
+export default class Monitor extends Component {
+  state = {
+    rangePickerValue: getTimeDistance('year'),
+  };
+
   componentDidMount() {
     this.props.dispatch({
-      type: 'monitor/fetchTags',
+      type: 'chart/fetch',
     });
   }
 
@@ -69,6 +75,8 @@ export default class Monitor extends PureComponent {
       xl: 6,
       style: { marginBottom: 24 },
     };
+    const { chart, loading } = this.props;
+    const { salesData } = chart;
 
     return (
       <Fragment>
@@ -145,46 +153,23 @@ export default class Monitor extends PureComponent {
             </ChartCard>
           </Col>
         </Row>
-        {/* <Row gutter={24} style={{ marginTop: 24 }}>
+        <Row gutter={24} style={{ marginTop: 24 }}>
           <Col xl={18} lg={24} sm={24} xs={24}>
-            <Card title="各部门占比" bordered={false} className={styles.pieCard}>
-              <Row style={{ padding: '16px 0' }}>
-                <Col span={8}>
-                  <Pie
-                    animate={false}
-                    percent={28}
-                    subTitle="部门1"
-                    total="28%"
-                    height={128}
-                    lineWidth={2}
-                  />
-                </Col>
-                <Col span={8}>
-                  <Pie
-                    animate={false}
-                    color="#5DDECF"
-                    percent={22}
-                    subTitle="部门2"
-                    total="22%"
-                    height={128}
-                    lineWidth={2}
-                  />
-                </Col>
-                <Col span={8}>
-                  <Pie
-                    animate={false}
-                    color="#2FC25B"
-                    percent={32}
-                    subTitle="部门3"
-                    total="32%"
-                    height={128}
-                    lineWidth={2}
-                  />
-                </Col>
-              </Row>
+            <Card loading={loading} bordered={false} bodyStyle={{ padding: 0 }}>
+              <div className={styles.salesCard}>
+                <Tabs size="large" tabBarStyle={{ marginBottom: 24 }}>
+                  <TabPane tab="项目完成进度" key="sales">
+                    <Row>
+                      <div className={styles.salesBar}>
+                        <Bar height={320} data={salesData} />
+                      </div>
+                    </Row>
+                  </TabPane>
+                </Tabs>
+              </div>
             </Card>
           </Col>
-        </Row> */}
+        </Row>
         <Row gutter={24} style={{ marginTop: 24 }}>
           <Col xl={18} lg={24} sm={24} xs={24}>
             <Card title="任务完成效率" bordered={false} className={styles.pieCard}>
