@@ -2,14 +2,18 @@ import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
-import { Row, Col, Card, List, Avatar, Table, Badge, Calendar } from 'antd';
+import { Row, Col, Card, List, Avatar, Table, Badge, Calendar, Radio } from 'antd';
 import Trend from 'components/Trend';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 import styles from './Workplace.less';
 
-const statusMap = ['default', 'processing', 'success', 'error'];
-const status = ['关闭', '运行中', '已上线', '异常'];
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
+// const TabPane = Tabs.TabPane;
+// function callback(key) {
+//   console.log(key);
+// }
 const getListData = value => {
   let listData;
   switch (value.date()) {
@@ -178,35 +182,19 @@ export default class Workplace extends PureComponent {
         render: text => <a href="/">{text}</a>,
       },
       {
-        title: '状态',
-        key: 'count',
-        className: styles.alignRight,
-        dataIndex: 'status',
-        filters: [
-          {
-            text: status[0],
-            value: 0,
-          },
-          {
-            text: status[1],
-            value: 1,
-          },
-          {
-            text: status[2],
-            value: 2,
-          },
-          {
-            text: status[3],
-            value: 3,
-          },
-        ],
-        onFilter: (value, record) => record.status.toString() === value,
-        render(val) {
-          return <Badge status={statusMap[val]} text={status[val]} />;
-        },
+        title: '任务',
+        dataIndex: 'task',
+        key: 'task',
+        render: text => <a href="/">{text}</a>,
       },
       {
-        title: '项目进度',
+        title: '任务负责人',
+        dataIndex: 'taskPerson',
+        key: 'taskPerson',
+        render: text => <a href="/">{text}</a>,
+      },
+      {
+        title: '任务进度',
         dataIndex: 'range',
         key: 'range',
         render: text => (
@@ -260,7 +248,52 @@ export default class Workplace extends PureComponent {
             </Card>
           </Col>
           <Col xl={8} lg={24} md={24} sm={24} xs={24}>
-            <Card loading={loading} bordered={false} title="项目列表" style={{ marginBottom: 24 }}>
+            <Card loading={loading} bordered={false} title="任务列表" style={{ marginBottom: 24 }}>
+              <div className={styles.extraContent}>
+                <RadioGroup defaultValue="all">
+                  <RadioButton value="all">全部</RadioButton>
+                  <RadioButton value="progress">待办任务</RadioButton>
+                  <RadioButton value="waiting">已完成任务</RadioButton>
+                </RadioGroup>
+              </div>
+              {/* <Tabs defaultActiveKey="1" onChange={callback}>
+                <TabPane tab="全部" key="1">
+                  <Table
+                    rowKey={record => record.index}
+                    size="small"
+                    columns={columns}
+                    dataSource={searchData}
+                    pagination={{
+                      style: { marginBottom: 0 },
+                      pageSize: 5,
+                    }}
+                  />
+                </TabPane>
+                <TabPane tab="待办任务" key="2">
+                  <Table
+                    rowKey={record => record.index}
+                    size="small"
+                    columns={columns}
+                    dataSource={searchData}
+                    pagination={{
+                      style: { marginBottom: 0 },
+                      pageSize: 5,
+                    }}
+                  />
+                </TabPane>
+                <TabPane tab="已完成任务" key="3">
+                  <Table
+                    rowKey={record => record.index}
+                    size="small"
+                    columns={columns}
+                    dataSource={searchData}
+                    pagination={{
+                      style: { marginBottom: 0 },
+                      pageSize: 5,
+                    }}
+                  />
+                </TabPane>
+              </Tabs> */}
               <Table
                 rowKey={record => record.index}
                 size="small"
