@@ -35,6 +35,7 @@ for (let i = 0; i < 50; i += 1) {
     keyword: `项目${i}`,
     task: `任务${i}`,
     taskPerson: `三毛`,
+    taskTime: `2018-06-07`,
     count: Math.floor(Math.random() * 1000),
     range: Math.floor(Math.random() * 100),
     status: Math.floor((Math.random() * 10) % 2),

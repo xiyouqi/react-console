@@ -3,7 +3,7 @@ import moment from 'moment';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
 import { Row, Col, Card, List, Avatar, Table, Badge, Calendar, Radio } from 'antd';
-import Trend from 'components/Trend';
+import DescriptionList from 'components/DescriptionList';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 import styles from './Workplace.less';
@@ -171,40 +171,42 @@ export default class Workplace extends PureComponent {
     );
     const columns = [
       {
-        title: '序号',
-        dataIndex: 'index',
-        key: 'index',
-      },
-      {
-        title: '项目名称',
-        dataIndex: 'keyword',
-        key: 'keyword',
-        render: text => <a href="/">{text}</a>,
-      },
-      {
         title: '任务',
         dataIndex: 'task',
         key: 'task',
         render: text => <a href="/">{text}</a>,
       },
       {
-        title: '任务负责人',
+        title: '任务执行人',
         dataIndex: 'taskPerson',
         key: 'taskPerson',
         render: text => <a href="/">{text}</a>,
       },
       {
-        title: '任务进度',
-        dataIndex: 'range',
-        key: 'range',
-        render: text => (
-          <Trend>
-            <span style={{ marginRight: 4 }}>{text}%</span>
-          </Trend>
-        ),
-        align: 'right',
+        title: '任务时间',
+        dataIndex: 'taskTime',
+        key: 'taskTime',
+        render: text => <a href="/">{text}</a>,
+      },
+      {
+        title: '状态',
+        dataIndex: 'status',
+        render: text =>
+          text === 'success' ? (
+            <Badge status="success" text="成功" />
+          ) : (
+            <Badge status="processing" text="进行中" />
+          ),
       },
     ];
+    const extraTab = (
+      <div className={styles.extraContent}>
+        <RadioGroup defaultValue="all">
+          <RadioButton value="all">我的任务</RadioButton>
+          <RadioButton value="progress">我的关注</RadioButton>
+        </RadioGroup>
+      </div>
+    );
 
     return (
       <PageHeaderLayout content={pageHeaderContent} extraContent={extraContent}>
@@ -231,7 +233,11 @@ export default class Workplace extends PureComponent {
                       }
                       description={item.description}
                     />
+
                     <div className={styles.projectItemContent}>
+                      <DescriptionList className={styles.headerList} size="small" col="3">
+                        <Badge status="processing" text="进行中" />
+                      </DescriptionList>
                       {item.updatedAt && (
                         <span className={styles.datetime} title={item.updatedAt}>
                           {moment(item.updatedAt).fromNow()}
@@ -248,14 +254,13 @@ export default class Workplace extends PureComponent {
             </Card>
           </Col>
           <Col xl={8} lg={24} md={24} sm={24} xs={24}>
-            <Card loading={loading} bordered={false} title="任务列表" style={{ marginBottom: 24 }}>
-              <div className={styles.extraContent}>
-                <RadioGroup defaultValue="all">
-                  <RadioButton value="all">全部</RadioButton>
-                  <RadioButton value="progress">待办任务</RadioButton>
-                  <RadioButton value="waiting">已完成任务</RadioButton>
-                </RadioGroup>
-              </div>
+            <Card
+              loading={loading}
+              bordered={false}
+              title="任务列表"
+              style={{ marginBottom: 24 }}
+              extra={extraTab}
+            >
               {/* <Tabs defaultActiveKey="1" onChange={callback}>
                 <TabPane tab="全部" key="1">
                   <Table

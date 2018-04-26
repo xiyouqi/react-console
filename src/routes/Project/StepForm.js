@@ -20,9 +20,9 @@ const { Step } = Steps;
 const extra = (
   <Fragment>
     <Steps style={{ marginLeft: -42, width: 'calc(100% + 84px)' }} progressDot current={1}>
-      <Step title={<span style={{ fontSize: 14 }}>创建项目</span>} />
-      <Step title={<span style={{ fontSize: 14 }}>部门初审</span>} />
-      <Step title={<span style={{ fontSize: 14 }}>财务复核</span>} />
+      <Step title={<span style={{ fontSize: 14 }}>资产生成</span>} />
+      <Step title={<span style={{ fontSize: 14 }}>转资申请</span>} />
+      <Step title={<span style={{ fontSize: 14 }}>ERP 系统处理</span>} />
       <Step title={<span style={{ fontSize: 14 }}>完成</span>} />
     </Steps>
   </Fragment>
@@ -240,8 +240,8 @@ export default class StepForm extends PureComponent {
     );
 
     const stepSecond = <Table bordered dataSource={this.state.data} columns={this.columns} />;
-
-    const stepThird = (
+    const stepThird = <Table bordered dataSource={this.state.data} columns={this.columns} />;
+    const stepLast = (
       <div>
         <Card bordered={false}>
           <Result
@@ -267,8 +267,12 @@ export default class StepForm extends PureComponent {
         content: stepSecond,
       },
       {
+        title: 'Third',
+        content:  stepThird,
+      },
+      {
         title: 'Last',
-        content: stepThird,
+        content: stepLast,
       },
     ];
 
@@ -305,7 +309,8 @@ export default class StepForm extends PureComponent {
       >
         <Steps current={this.state.current} className={styles.steps}>
           <Step title="转资便利化配置" />
-          <Step title="待转资列表" />
+          <Step title="资产定义" />
+          <Step title="费用分摊" />
           <Step title="提交 ERP 系统" />
           <Step title="完成" />
         </Steps>
