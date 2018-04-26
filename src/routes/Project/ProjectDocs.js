@@ -3,7 +3,7 @@ import moment from 'moment';
 import { connect } from 'dva';
 import { List, Card, Radio, Button, Icon, Dropdown, Menu, Avatar, Tag } from 'antd';
 
-import styles from '../Documention/DocList.less';
+import styles from './ProjectDocs.less';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -112,7 +112,7 @@ export default class ProjectDocs extends PureComponent {
                   title={<a href={item.href}>{item.title}</a>}
                   description={item.subDescription}
                 />
-                <div style={{ marginTop: 12 }}>
+                <div className={styles.projectTag}>
                   <Tag color="#f50">会议纪要</Tag>
                 </div>
                 <ListContent data={item} />

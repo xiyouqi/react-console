@@ -1,6 +1,9 @@
 @import '~antd/lib/style/themes/default.less';
 @import '../../utils/utils.less';
 
+.projectTag {
+  margin-top: 12px;
+}
 .standardList {
   :global {
     .ant-card-head {
@@ -99,9 +102,6 @@
     }
   }
 }
-.projectTag {
-  margin-top: 12px;
-}
 
 @media screen and (max-width: @screen-xs) {
   .standardList {
@@ -110,6 +110,7 @@
         display: block;
         flex: none;
         width: 100%;
+        justify-content: left;
       }
       .ant-list-item-action {
         margin-left: 0;

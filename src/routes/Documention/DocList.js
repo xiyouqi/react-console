@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
-import { List, Card, Radio, Input, Button, Icon, Dropdown, Menu, Avatar, Select } from 'antd';
+import { List, Card, Radio, Input, Button, Icon, Dropdown, Menu, Avatar, Select, Tag } from 'antd';
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
@@ -139,6 +139,9 @@ export default class SearchList extends PureComponent {
                     title={<a href={item.href}>{item.title}</a>}
                     description={item.subDescription}
                   />
+                  <div className={styles.projectTag}>
+                    <Tag color="#f50">会议纪要</Tag>
+                  </div>
                   <ListContent data={item} />
                 </List.Item>
               )}
