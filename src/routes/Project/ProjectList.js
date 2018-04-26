@@ -14,7 +14,6 @@ import {
   Dropdown,
   Menu,
   Avatar,
-  Tag,
 } from 'antd';
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -154,9 +153,6 @@ export default class ProjectList extends PureComponent {
                     title={<Link to={`/projects/${item.id}`}>{item.title}</Link>}
                     description={item.subDescription}
                   />
-                  <div className={styles.projectTag}>
-                    <Tag color="#f50">项目方案</Tag>
-                  </div>
                   <ListContent data={item} />
                 </List.Item>
               )}
