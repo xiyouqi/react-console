@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { Table, Badge, Card } from 'antd';
+import { Table, Badge, Card, Divider } from 'antd';
 import styles from './ProjectProgress.less';
 
 @connect(({ rule, loading }) => ({
@@ -91,6 +91,16 @@ export default class ProjectProgress extends PureComponent {
         ),
       },
       { title: '质量', dataIndex: 'quality', key: 'quality' },
+      {
+        title: '操作',
+        render: () => (
+          <Fragment>
+            <a href="#">复制</a>
+            <Divider type="vertical" />
+            <a href="#">删除</a>
+          </Fragment>
+        ),
+      },
     ];
 
     const data = [];
@@ -111,7 +121,7 @@ export default class ProjectProgress extends PureComponent {
     }
 
     return (
-      <Card classNmae={styles.nestedTable}>
+      <Card classNmae={styles.nestedTable} title="工程进度">
         <Table columns={columns} expandedRowRender={expandedRowRender} dataSource={data} />
       </Card>
     );

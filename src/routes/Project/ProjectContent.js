@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { Card, Table, Badge } from 'antd';
+import { Card, Table, Badge, Button, Divider } from 'antd';
 
 import styles from './ProjectContent.less';
 
@@ -147,6 +147,16 @@ export default class VendorList extends PureComponent {
         ),
       },
       { title: '质量', dataIndex: 'quality', key: 'quality' },
+      {
+        title: '操作',
+        render: () => (
+          <Fragment>
+            <a href="#">复制</a>
+            <Divider type="vertical" />
+            <a href="#">删除</a>
+          </Fragment>
+        ),
+      },
     ];
 
     const data = [];
@@ -165,14 +175,48 @@ export default class VendorList extends PureComponent {
         quality: '',
       });
     }
-
     return (
       <div>
-        <Card classNmae={styles.nestedTable}>
+        <Card classNmae={styles.nestedTable} title="工程定义">
+          <div>
+            <Button
+              icon="plus"
+              type="primary"
+              onClick={() => this.handleModalVisible(true)}
+              className={styles.uploadBtn}
+            >
+              创建
+            </Button>
+            <Button
+              icon="arrow-up"
+              type="primary"
+              onClick={() => this.handleModalVisible(true)}
+              className={styles.uploadBtn}
+            >
+              导入
+            </Button>
+          </div>
           <Table columns={columns} expandedRowRender={expandedRowRender} dataSource={data} />
         </Card>
-        <Card bordered={false} style={{ marginTop: 24 }}>
-          <div className={styles.title}>项目合同</div>
+        <Card bordered={false} style={{ marginTop: 24 }} title="项目合同">
+          <div>
+            <Button
+              icon="plus"
+              type="primary"
+              onClick={() => this.handleModalVisible(true)}
+              className={styles.uploadBtn}
+            >
+              创建
+            </Button>
+            <Button
+              icon="arrow-up"
+              type="primary"
+              onClick={() => this.handleModalVisible(true)}
+              className={styles.uploadBtn}
+            >
+              导入
+            </Button>
+          </div>
           <Table
             style={{ marginBottom: 16 }}
             pagination={false}

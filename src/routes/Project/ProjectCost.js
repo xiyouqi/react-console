@@ -1,12 +1,13 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { Card, Radio, Divider } from 'antd';
+import { Card, Radio, Divider, Button, Input } from 'antd';
 import StandardTable from 'components/StandardTable';
 
 import styles from './ProjectCost.less';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
+const { Search } = Input;
 
 const getValue = obj =>
   Object.keys(obj)
@@ -17,7 +18,7 @@ const getValue = obj =>
   rule,
   loading: loading.models.rule,
 }))
-export default class VendorList extends PureComponent {
+export default class ProjectCost extends PureComponent {
   state = {
     selectedRows: [],
     formValues: {},
@@ -66,7 +67,9 @@ export default class VendorList extends PureComponent {
           <RadioButton value="all">全部</RadioButton>
           <RadioButton value="progress">甲供材料</RadioButton>
           <RadioButton value="waiting">乙供材料</RadioButton>
+          <RadioButton value="waiting">设备</RadioButton>
         </RadioGroup>
+        <Search className={styles.extraContentSearch} placeholder="请输入" onSearch={() => ({})} />
       </div>
     );
 
@@ -126,8 +129,20 @@ export default class VendorList extends PureComponent {
         ),
       },
     ];
+
+    const UploadBtn = (
+      <Button
+        icon="car"
+        type="primary"
+        onClick={() => this.handleModalVisible(true)}
+        className={styles.uploadBtn}
+        style={{ marginTop: 8, marginBottom: 8 }}
+      >
+        采购申请
+      </Button>
+    );
     return (
-      <Card bordered={false} title="成本列表" extra={extraContent}>
+      <Card bordered={false} title={UploadBtn} extra={extraContent}>
         <div className={styles.tableList}>
           <StandardTable
             selectedRows={selectedRows}
