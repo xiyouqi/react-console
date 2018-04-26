@@ -135,7 +135,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['list'], () => import('../routes/Project/ProjectCost')),
     },
     '/projects/:id/content': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/Project/ProjectContent')),
+      component: dynamicWrapper(app, ['profile'], () => import('../routes/Project/ProjectContent')),
     },
     '/projects/:id/progress': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/Project/ProjectProgress')),

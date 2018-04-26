@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
-import { List, Card, Radio, Button, Icon, Dropdown, Menu, Avatar } from 'antd';
+import { List, Card, Radio, Button, Icon, Dropdown, Menu, Avatar, Tag } from 'antd';
 
 import styles from '../Documention/DocList.less';
 
@@ -112,6 +112,9 @@ export default class ProjectDocs extends PureComponent {
                   title={<a href={item.href}>{item.title}</a>}
                   description={item.subDescription}
                 />
+                <div style={{ marginTop: 12 }}>
+                  <Tag color="#f50">会议纪要</Tag>
+                </div>
                 <ListContent data={item} />
               </List.Item>
             )}
