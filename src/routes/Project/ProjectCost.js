@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { Card, Radio, Divider, Button, Input } from 'antd';
+import { Card, Radio, Divider, Button, Input, Select } from 'antd';
 import StandardTable from 'components/StandardTable';
 
 import styles from './ProjectCost.less';
@@ -8,6 +8,7 @@ import styles from './ProjectCost.less';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const { Search } = Input;
+const { Option } = Select;
 
 const getValue = obj =>
   Object.keys(obj)
@@ -69,6 +70,17 @@ export default class ProjectCost extends PureComponent {
           <RadioButton value="waiting">乙供材料</RadioButton>
           <RadioButton value="waiting">设备</RadioButton>
         </RadioGroup>
+        <Select
+          className={styles.slectRight}
+          placeholder="供应商A"
+          onChange={this.handleFormSubmit}
+          style={{ maxWidth: 200, width: '100%' }}
+        >
+          <Option value="1">供应商B</Option>
+          <Option value="2">供应商C</Option>
+          <Option value="3">供应商D</Option>
+          <Option value="4">供应商F</Option>
+        </Select>
         <Search className={styles.extraContentSearch} placeholder="请输入" onSearch={() => ({})} />
       </div>
     );
