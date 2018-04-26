@@ -64,7 +64,7 @@ const tabList = [
     tab: '内容',
   },
   {
-    key: 'progess',
+    key: 'progress',
     tab: '进度',
     count: 2,
   },
@@ -124,6 +124,9 @@ export default class ProjectProfile extends PureComponent {
         break;
       case 'content':
         dispatch(routerRedux.push(`${match.url}/content`));
+        break;
+      case 'progress':
+        dispatch(routerRedux.push(`${match.url}/progress`));
         break;
       case 'docs':
         dispatch(routerRedux.push(`${match.url}/docs`));
