@@ -49,7 +49,7 @@ const menuData = [
     ],
   },
   {
-    name: '设置',
+    name: '后评估',
     icon: 'setting',
     path: 'exception',
   },

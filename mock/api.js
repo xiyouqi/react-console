@@ -1,14 +1,26 @@
 import { parse } from 'url';
+import projectData from './project-data';
 
 const titles = [
-  '2018 年移动传输网项目一期',
-  '2018 年移动通信网项目二期',
+  '社会管理综合治理接入项目',
+  '移动通信网项目二期',
   '高新区红星紫郡集客接入',
-  'Ant Design Pro',
-  'Bootstrap',
-  'React',
-  'Vue',
-  'Webpack',
+  '兰州至张掖骨干传输网五期',
+  '农商银行专线业务网',
+  '工程建设管理系统三期',
+  '宽带业务支撑系统二期',
+  '大青山移动通信网一期',
+];
+
+const types = [
+  '移动通信网',
+  '传输网',
+  '集客接入',
+  '业务网',
+  '支撑网网管系统',
+  '业务支撑系统',
+  '信息化系统和信息安全系统',
+  '局房土建及动力配套',
 ];
 
 const avatars = [
@@ -17,22 +29,38 @@ const avatars = [
   '../src/assets/rar.png', // Ant Design
   '../src/assets/wenjianjia.png', // Ant Design Pro
   '../src/assets/xlsx.png', // Bootstrap
-  'https://gw.alipayobjects.com/zos/rmsportal/kZzEzemZyKLKFsojXItE.png', // React
-  'https://gw.alipayobjects.com/zos/rmsportal/ComBAopevLwENQdKWiIn.png', // Vue
-  'https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png', // Webpack
 ];
 
+const docTitles = [
+  '设计图纸.pdf',
+  '项目施工规范.docx',
+  '项目验收资料.rar',
+  '现场照片',
+  '项目执行计划跟踪.xlsx',
+];
+
+const docTags = ['设计', '施工,规范', '验收', '质量,照片', '计划'];
+
 const avatars2 = [
-  'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/cnrhVkzwxjPwAaCfPbdc.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/gaOngJwsRYRaVAuXXcmB.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/ubnKSIfAJTxIgXOKlciN.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/WhxKECPNujWoWEFNdnJE.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/psOgztMplJMGpVEqfcgF.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/ZpBqSxLxVEXfcUNoPKrz.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/laiEnJdGHVOhJrUShBaJ.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/UrQsqscbKEpNuJcvBZBu.png',
+  '../src/assets/avatars/avatar-ben.png',
+  '../src/assets/avatars/avatar-finn.png',
+  '../src/assets/avatars/avatar-han.png',
+  '../src/assets/avatars/avatar-leia.png',
+  '../src/assets/avatars/avatar-luke.png',
+  '../src/assets/avatars/avatar-poe.png',
+  '../src/assets/avatars/avatar-rey.png',
+  '../src/assets/avatars/avatar-yoda.png',
+];
+
+const projectAvatars = [
+  '../src/assets/civil-engineering.png', // Alipay
+  '../src/assets/collector-access.png', // Angular
+  '../src/assets/communication-network.png', // Ant Design
+  '../src/assets/support-network.png', // Ant Design Pro
+  '../src/assets/transmission-network.png', // Bootstrap
+  '../src/assets/information-system.png', // React
+  '../src/assets/transmission-network.png', // Bootstrap
+  '../src/assets/information-system.png', // React
 ];
 
 const covers = [
@@ -50,16 +78,16 @@ const desc = [
 ];
 
 const user = [
-  '付小小',
-  '曲丽丽',
-  '林东东',
-  '周星星',
-  '吴加好',
-  '朱偏右',
-  '鱼酱',
-  '乐哥',
-  '谭小仪',
-  '仲尼',
+  '池大同',
+  '曲建红',
+  '林河',
+  '池傲天',
+  '艾米',
+  '霍恩斯',
+  '红石',
+  '大青山',
+  '林雨裳',
+  '沙若',
 ];
 
 export function fakeList(count) {
@@ -69,11 +97,49 @@ export function fakeList(count) {
       id: `fake-list-${i}`,
       owner: user[i % 10],
       title: titles[i % 8],
+      task_code: projectData['建筑安装工程量概算表(表三)甲'][i % 15 + 1][1],
+      task: projectData['建筑安装工程量概算表(表三)甲'][i % 15 + 1][2],
+      cost_name: projectData['国内器材概算表(表四)甲 主要材料表'][i % 10 + 1][1],
+      cost_format: projectData['国内器材概算表(表四)甲 主要材料表'][i % 10 + 1][2],
+      cost_unit: projectData['国内器材概算表(表四)甲 主要材料表'][i % 10 + 1][3],
+      cost_no_tax_price: projectData['国内器材概算表(表四)甲 主要材料表'][i % 10 + 1][4],
+      cost_tax: projectData['国内器材概算表(表四)甲 主要材料表'][i % 10 + 1][5],
+      cost_price: projectData['国内器材概算表(表四)甲 主要材料表'][i % 10 + 1][6],
+      cost_num: projectData['国内器材概算表(表四)甲 主要材料表'][i % 10 + 1][7],
+      cost_no_tax_amount: projectData['国内器材概算表(表四)甲 主要材料表'][i % 10 + 1][8],
+      cost_tax_amount: projectData['国内器材概算表(表四)甲 主要材料表'][i % 10 + 1][9],
+      cost_amount: projectData['国内器材概算表(表四)甲 主要材料表'][i % 10 + 1][10],
+      q_code: projectData['质量管理要求'][i % 3 + 1][0],
+      q_name: projectData['质量管理要求'][i % 3 + 1][1],
+      q_desc: projectData['质量管理要求'][i % 3 + 1][2],
+      q_photo_desc: projectData['质量管理要求'][i % 3 + 1][3],
+      q_photos: projectData['质量管理要求'][i % 3 + 1][4],
+      q_is_sg: projectData['质量管理要求'][i % 3 + 1][5],
+      q_is_jl: projectData['质量管理要求'][i % 3 + 1][6],
+      q_is_ys: projectData['质量管理要求'][i % 3 + 1][7],
+      as_code: projectData['资产明细'][i % 38 + 2][1],
+      as_name: projectData['资产明细'][i % 38 + 2][2],
+      as_category: projectData['资产明细'][i % 38 + 2][3],
+      as_item: projectData['资产明细'][i % 38 + 2][4],
+      as_subject: projectData['资产明细'][i % 38 + 2][5],
+      as_section: projectData['资产明细'][i % 38 + 2][6],
+      as_format: projectData['资产明细'][i % 38 + 2][7],
+      as_num: projectData['资产明细'][i % 38 + 2][8],
+      as_enable: projectData['资产明细'][i % 38 + 2][10],
+      as_amount: projectData['资产明细'][i % 38 + 2][13],
+      as_place: projectData['资产明细'][i % 38 + 2][12],
+      as_share_expense: projectData['资产明细'][i % 38 + 2][14],
+      as_amount_sum: projectData['资产明细'][i % 38 + 2][15],
+      doc_title: docTitles[i % 5],
+      doc_icon: avatars[i % 5],
+      doc_tag: docTags[i % 5],
+      cost_stock: Math.floor(Math.random() * 3),
+      type: types[i % 8],
       avatar: avatars[i % 8],
       cover: parseInt(i / 4, 10) % 2 === 0 ? covers[i % 4] : covers[3 - i % 4],
       status: ['active', 'exception', 'normal'][i % 3],
       percent: Math.ceil(Math.random() * 50) + 50,
-      logo: avatars[i % 8],
+      logo: projectAvatars[i % 8],
       href: '#',
       updatedAt: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i),
       createdAt: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i),
@@ -194,7 +260,7 @@ export const getActivities = [
     id: 'trend-1',
     updatedAt: new Date(),
     user: {
-      name: '曲丽丽',
+      name: user[0],
       avatar: avatars2[0],
     },
     group: {
@@ -202,7 +268,7 @@ export const getActivities = [
       link: 'http://github.com/',
     },
     project: {
-      name: '六月迭代',
+      name: user[1],
       link: 'http://github.com/',
     },
     template: '在 @{group} 新建项目 @{project}',
@@ -211,7 +277,7 @@ export const getActivities = [
     id: 'trend-2',
     updatedAt: new Date(),
     user: {
-      name: '付小小',
+      name: user[2],
       avatar: avatars2[1],
     },
     group: {
@@ -228,7 +294,7 @@ export const getActivities = [
     id: 'trend-3',
     updatedAt: new Date(),
     user: {
-      name: '林东东',
+      name: user[3],
       avatar: avatars2[2],
     },
     group: {
@@ -245,7 +311,7 @@ export const getActivities = [
     id: 'trend-4',
     updatedAt: new Date(),
     user: {
-      name: '周星星',
+      name: user[4],
       avatar: avatars2[4],
     },
     project: {
@@ -258,7 +324,7 @@ export const getActivities = [
     id: 'trend-5',
     updatedAt: new Date(),
     user: {
-      name: '朱偏右',
+      name: user[5],
       avatar: avatars2[3],
     },
     project: {
@@ -275,7 +341,7 @@ export const getActivities = [
     id: 'trend-6',
     updatedAt: new Date(),
     user: {
-      name: '乐哥',
+      name: user[6],
       avatar: avatars2[5],
     },
     group: {

@@ -1,15 +1,9 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { Card, Radio, Divider, Button, Input, Select } from 'antd';
+import { Card, Button, Divider } from 'antd';
 import StandardTable from 'components/StandardTable';
-import StepForm from './StepForm';
 
 import styles from './ProjectCost.less';
-
-const RadioButton = Radio.Button;
-const RadioGroup = Radio.Group;
-const { Search } = Input;
-const { Option } = Select;
 
 const getValue = obj =>
   Object.keys(obj)
@@ -20,12 +14,10 @@ const getValue = obj =>
   list,
   loading: loading.models.rule,
 }))
-export default class ProjectCost extends PureComponent {
+export default class ProjectQ extends PureComponent {
   state = {
     selectedRows: [],
     formValues: {},
-    modalVisible: false,
-    current: 0,
   };
 
   componentDidMount() {
@@ -36,7 +28,7 @@ export default class ProjectCost extends PureComponent {
     dispatch({
       type: 'list/fetch',
       payload: {
-        count: 10,
+        count: 3,
       },
     });
   }
@@ -67,74 +59,56 @@ export default class ProjectCost extends PureComponent {
     });
   };
 
-  handleModalVisible = flag => {
-    this.setState({
-      modalVisible: !!flag,
-    });
-  };
-
   render() {
     const { list, loading } = this.props;
-    const { selectedRows, current, modalVisible } = this.state;
-
-    const extraContent = (
-      <div className={styles.extraContent}>
-        <RadioGroup defaultValue="1">
-          <RadioButton value="1">甲供材料</RadioButton>
-          <RadioButton value="2">乙供材料</RadioButton>
-          <RadioButton value="3">设备</RadioButton>
-        </RadioGroup>
-        <Select
-          className={styles.slectRight}
-          placeholder="供应商"
-          onChange={this.handleFormSubmit}
-          style={{ width: 100 }}
-        >
-          <Option value="1">供应商B</Option>
-          <Option value="2">供应商C</Option>
-          <Option value="3">供应商D</Option>
-          <Option value="4">供应商F</Option>
-        </Select>
-        <Search className={styles.extraContentSearch} placeholder="请输入" onSearch={() => ({})} />
-      </div>
-    );
+    const { selectedRows } = this.state;
 
     const columns = [
       {
-        title: '资产标签号',
-        dataIndex: 'as_code',
+        title: '定额编号',
+        dataIndex: 'q_code',
+        key: 'q_code',
       },
       {
-        title: '名称',
-        dataIndex: 'as_name',
+        title: '项目',
+        dataIndex: 'q_name',
+        width: 100,
       },
       {
-        title: '规格',
-        dataIndex: 'as_format',
+        title: '质量要求',
+        dataIndex: 'q_desc',
+        width: 250,
       },
       {
-        title: '数量',
-        dataIndex: 'as_num',
+        title: '拍照要求',
+        dataIndex: 'photo_desc',
       },
       {
-        title: '合同价值（元）',
-        dataIndex: 'as_amount',
+        title: '样本照片',
+        dataIndex: 'photos',
       },
       {
-        title: '分摊价值（元）',
-        dataIndex: 'as_share_expense',
+        title: '施工单位',
+        dataIndex: 'q_is_sg',
+        align: 'center',
       },
       {
-        title: '合计',
-        dataIndex: 'as_amount_sum',
+        title: '监理单位',
+        dataIndex: 'q_is_jl',
+        align: 'center',
+      },
+      {
+        title: '验收',
+        dataIndex: 'q_is_ys',
+        align: 'center',
       },
       {
         title: '操作',
         render: () => (
           <Fragment>
-            <a href="#">处理</a>
+            <a href="#">上传</a>
             <Divider type="vertical" />
-            <a href="#">转资</a>
+            <a href="#">验收</a>
           </Fragment>
         ),
       },
@@ -143,25 +117,27 @@ export default class ProjectCost extends PureComponent {
     const UploadBtn = (
       <div>
         <Button
-          icon="pay-circle-o"
+          icon="upload"
           type="primary"
           onClick={() => this.handleModalVisible(true)}
           className={styles.uploadBtn}
           style={{ marginTop: 8, marginBottom: 8 }}
         >
-          转资申请
+          上传照片
+        </Button>
+        <Button
+          icon="check"
+          onClick={() => this.handleModalVisible(true)}
+          className={styles.uploadBtn}
+          style={{ marginTop: 8, marginBottom: 8, marginLeft: 8 }}
+        >
+          质量验收
         </Button>
       </div>
     );
 
-    const parentMethods = {
-      handleAdd: this.handleAdd,
-      handleModalVisible: this.handleModalVisible,
-      current,
-    };
-
     return (
-      <Card bordered={false} title={UploadBtn} extra={extraContent}>
+      <Card bordered={false} title={UploadBtn}>
         <div className={styles.tableList}>
           <StandardTable
             selectedRows={selectedRows}
@@ -172,7 +148,6 @@ export default class ProjectCost extends PureComponent {
             onChange={this.handleStandardTableChange}
           />
         </div>
-        <StepForm {...parentMethods} modalVisible={modalVisible} />
       </Card>
     );
   }

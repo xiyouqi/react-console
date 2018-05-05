@@ -70,8 +70,8 @@ const dateCellRender = value => {
   );
 };
 
-@connect(({ project, activities, chart, loading }) => ({
-  project,
+@connect(({ list, activities, chart, loading }) => ({
+  list,
   activities,
   chart,
   projectLoading: loading.effects['project/fetchNotice'],
@@ -82,7 +82,10 @@ export default class Workplace extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'project/fetchNotice',
+      type: 'list/fetch',
+      payload: {
+        count: 6,
+      },
     });
     dispatch({
       type: 'activities/fetchList',
@@ -135,16 +138,11 @@ export default class Workplace extends PureComponent {
   }
 
   render() {
-    const { project: { notice }, projectLoading, activitiesLoading, loading, chart } = this.props;
-    const { searchData } = chart;
-
+    const { list: { list }, projectLoading, activitiesLoading, loading } = this.props;
     const pageHeaderContent = (
       <div className={styles.pageHeaderContent}>
         <div className={styles.avatar}>
-          <Avatar
-            size="large"
-            src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"
-          />
+          <Avatar size="large" src="../src/assets/avatars/avatar-leia.png" />
         </div>
         <div className={styles.content}>
           <div className={styles.contentTitle}>早安，猴子</div>
@@ -177,25 +175,15 @@ export default class Workplace extends PureComponent {
         render: text => <a href="/">{text}</a>,
       },
       {
-        title: '任务执行人',
-        dataIndex: 'taskPerson',
-        key: 'taskPerson',
-        render: text => <a href="/">{text}</a>,
-      },
-      {
-        title: '任务时间',
-        dataIndex: 'taskTime',
-        key: 'taskTime',
-        render: text => <a href="/">{text}</a>,
-      },
-      {
         title: '状态',
         dataIndex: 'status',
+        width: 60,
+        align: 'center',
         render: text =>
           text === 'success' ? (
             <Badge status="success" text="成功" />
           ) : (
-            <Badge status="processing" text="进行中" />
+            <Badge status="processing" />
           ),
       },
     ];
@@ -217,11 +205,11 @@ export default class Workplace extends PureComponent {
               style={{ marginBottom: 24 }}
               title="进行中的项目"
               bordered={false}
-              extra={<Link to="/">全部项目</Link>}
+              extra={<Link to="/projects">全部项目</Link>}
               loading={projectLoading}
               bodyStyle={{ padding: 0 }}
             >
-              {notice.map(item => (
+              {list.map(item => (
                 <Card.Grid className={styles.projectGrid} key={item.id}>
                   <Card bodyStyle={{ padding: 0 }} bordered={false}>
                     <Card.Meta
@@ -231,7 +219,6 @@ export default class Workplace extends PureComponent {
                           <Link to={item.href}>{item.title}</Link>
                         </div>
                       }
-                      description={item.description}
                     />
 
                     <div className={styles.projectItemContent}>
@@ -260,50 +247,17 @@ export default class Workplace extends PureComponent {
               title="任务列表"
               style={{ marginBottom: 24 }}
               extra={extraTab}
+              className={styles.taskList}
             >
-              {/* <Tabs defaultActiveKey="1" onChange={callback}>
-                <TabPane tab="全部" key="1">
-                  <Table
-                    rowKey={record => record.index}
-                    size="small"
-                    columns={columns}
-                    dataSource={searchData}
-                    pagination={{
-                      style: { marginBottom: 0 },
-                      pageSize: 5,
-                    }}
-                  />
-                </TabPane>
-                <TabPane tab="待办任务" key="2">
-                  <Table
-                    rowKey={record => record.index}
-                    size="small"
-                    columns={columns}
-                    dataSource={searchData}
-                    pagination={{
-                      style: { marginBottom: 0 },
-                      pageSize: 5,
-                    }}
-                  />
-                </TabPane>
-                <TabPane tab="已完成任务" key="3">
-                  <Table
-                    rowKey={record => record.index}
-                    size="small"
-                    columns={columns}
-                    dataSource={searchData}
-                    pagination={{
-                      style: { marginBottom: 0 },
-                      pageSize: 5,
-                    }}
-                  />
-                </TabPane>
-              </Tabs> */}
               <Table
                 rowKey={record => record.index}
                 size="small"
                 columns={columns}
-                dataSource={searchData}
+                dataSource={list}
+                rowSelection={{
+                  selectedRowKeys: [],
+                  onChange: () => {},
+                }}
                 pagination={{
                   style: { marginBottom: 0 },
                   pageSize: 5,

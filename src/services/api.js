@@ -60,6 +60,10 @@ export async function queryFakeList(params) {
   return request(`/api/fake_list?${stringify(params)}`);
 }
 
+export async function queryProjectList(params) {
+  return request(`/api/projects?${stringify(params)}`);
+}
+
 export async function fakeAccountLogin(params) {
   return request('/api/login/account', {
     method: 'POST',

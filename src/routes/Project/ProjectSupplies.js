@@ -2,7 +2,6 @@ import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import { Card, Radio, Divider, Button, Input, Select } from 'antd';
 import StandardTable from 'components/StandardTable';
-import StepForm from './StepForm';
 
 import styles from './ProjectCost.less';
 
@@ -24,8 +23,6 @@ export default class ProjectCost extends PureComponent {
   state = {
     selectedRows: [],
     formValues: {},
-    modalVisible: false,
-    current: 0,
   };
 
   componentDidMount() {
@@ -67,15 +64,9 @@ export default class ProjectCost extends PureComponent {
     });
   };
 
-  handleModalVisible = flag => {
-    this.setState({
-      modalVisible: !!flag,
-    });
-  };
-
   render() {
     const { list, loading } = this.props;
-    const { selectedRows, current, modalVisible } = this.state;
+    const { selectedRows } = this.state;
 
     const extraContent = (
       <div className={styles.extraContent}>
@@ -101,40 +92,45 @@ export default class ProjectCost extends PureComponent {
 
     const columns = [
       {
-        title: '资产标签号',
-        dataIndex: 'as_code',
-      },
-      {
-        title: '名称',
-        dataIndex: 'as_name',
+        title: '材料名称',
+        dataIndex: 'cost_name',
       },
       {
         title: '规格',
-        dataIndex: 'as_format',
+        dataIndex: 'cost_format',
+      },
+      {
+        title: '单位',
+        dataIndex: 'cost_unit',
       },
       {
         title: '数量',
-        dataIndex: 'as_num',
+        dataIndex: 'cost_num',
       },
       {
-        title: '合同价值（元）',
-        dataIndex: 'as_amount',
+        title: '单价',
+        dataIndex: 'cost_price',
       },
       {
-        title: '分摊价值（元）',
-        dataIndex: 'as_share_expense',
+        title: '使用',
+        dataIndex: 'cost_stock',
+        align: 'right',
+        render: value => {
+          return Math.ceil(Math.random() * value);
+        },
       },
       {
-        title: '合计',
-        dataIndex: 'as_amount_sum',
+        title: '库存',
+        dataIndex: 'cost_stock',
+        align: 'right',
       },
       {
         title: '操作',
-        render: () => (
+        render: (value, record) => (
           <Fragment>
-            <a href="#">处理</a>
+            <a href="#123">{record.cost_stock ? '领料申请' : '采购申请'}</a>
             <Divider type="vertical" />
-            <a href="#">转资</a>
+            <a href="#123">退料</a>
           </Fragment>
         ),
       },
@@ -143,22 +139,24 @@ export default class ProjectCost extends PureComponent {
     const UploadBtn = (
       <div>
         <Button
-          icon="pay-circle-o"
+          icon="car"
           type="primary"
           onClick={() => this.handleModalVisible(true)}
           className={styles.uploadBtn}
           style={{ marginTop: 8, marginBottom: 8 }}
         >
-          转资申请
+          采购申请
+        </Button>
+        <Button
+          icon="export"
+          onClick={() => this.handleModalVisible(true)}
+          className={styles.uploadBtn}
+          style={{ marginTop: 8, marginBottom: 8, marginLeft: 8 }}
+        >
+          领料申请
         </Button>
       </div>
     );
-
-    const parentMethods = {
-      handleAdd: this.handleAdd,
-      handleModalVisible: this.handleModalVisible,
-      current,
-    };
 
     return (
       <Card bordered={false} title={UploadBtn} extra={extraContent}>
@@ -172,7 +170,6 @@ export default class ProjectCost extends PureComponent {
             onChange={this.handleStandardTableChange}
           />
         </div>
-        <StepForm {...parentMethods} modalVisible={modalVisible} />
       </Card>
     );
   }

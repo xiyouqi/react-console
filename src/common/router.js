@@ -79,7 +79,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['monitor'], () => import('../routes/Dashboard/Monitor')),
     },
     '/dashboard/workplace': {
-      component: dynamicWrapper(app, ['project', 'activities', 'chart'], () =>
+      component: dynamicWrapper(app, ['list', 'activities', 'chart'], () =>
         import('../routes/Dashboard/Workplace')
       ),
       // hideInBreadcrumb: true,
@@ -133,6 +133,12 @@ export const getRouterData = app => {
     },
     '/projects/:id/cost': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/Project/ProjectCost')),
+    },
+    '/projects/:id/supplies': {
+      component: dynamicWrapper(app, ['list'], () => import('../routes/Project/ProjectSupplies')),
+    },
+    '/projects/:id/q': {
+      component: dynamicWrapper(app, ['list'], () => import('../routes/Project/ProjectQ')),
     },
     '/projects/:id/content': {
       component: dynamicWrapper(app, ['profile'], () => import('../routes/Project/ProjectContent')),

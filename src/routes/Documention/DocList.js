@@ -32,7 +32,7 @@ export default class SearchList extends PureComponent {
       <div className={styles.searchBar} style={{ textAlign: 'center' }}>
         <Select
           className={styles.slectRight}
-          placeholder="项目一"
+          placeholder="项目"
           onChange={this.handleFormSubmit}
           style={{ maxWidth: 200, width: '100%' }}
         >
@@ -135,12 +135,12 @@ export default class SearchList extends PureComponent {
               renderItem={item => (
                 <List.Item actions={[<a>编辑</a>, <MoreBtn />]}>
                   <List.Item.Meta
-                    avatar={<Avatar src={item.logo} shape="square" size="large" />}
-                    title={<a href={item.href}>{item.title}</a>}
+                    avatar={<Avatar src={item.doc_icon} shape="square" size="large" />}
+                    title={<a href={item.href}>{item.doc_title}</a>}
                     description={item.subDescription}
                   />
                   <div className={styles.projectTag}>
-                    <Tag color="#f50">会议纪要</Tag>
+                    {item.doc_tag.split(',').map(tag => <Tag>{tag}</Tag>)}
                   </div>
                   <ListContent data={item} />
                 </List.Item>
