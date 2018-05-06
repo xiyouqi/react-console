@@ -5,24 +5,27 @@ import {
   message,
   Form,
   Input,
-  Checkbox,
+  // Checkbox,
   Table,
   Popconfirm,
   Steps,
   Card,
+  Select,
 } from 'antd';
 import Result from 'components/Result';
 
 import styles from './StepForm.less';
 
 const { Step } = Steps;
+const { TextArea } = Input;
+const { Option } = Select;
 
 const extra = (
   <Fragment>
     <Steps style={{ marginLeft: -42, width: 'calc(100% + 84px)' }} progressDot current={1}>
-      <Step title={<span style={{ fontSize: 14 }}>资产生成</span>} />
-      <Step title={<span style={{ fontSize: 14 }}>转资申请</span>} />
-      <Step title={<span style={{ fontSize: 14 }}>ERP 系统处理</span>} />
+      <Step title={<span style={{ fontSize: 14 }}>发起审批</span>} />
+      <Step title={<span style={{ fontSize: 14 }}>项目审批</span>} />
+      <Step title={<span style={{ fontSize: 14 }}>工作组审批</span>} />
       <Step title={<span style={{ fontSize: 14 }}>完成</span>} />
     </Steps>
   </Fragment>
@@ -31,11 +34,10 @@ const extra = (
 const actions = (
   <Fragment>
     <Button type="primary">返回列表</Button>
-    <Button>查看项目</Button>
-    <Button>打 印</Button>
+    <Button>查看审批记录</Button>
   </Fragment>
 );
-const CheckboxGroup = Checkbox.Group;
+
 const plainOptions = [
   '资产类别失效不允许转资',
   '资产地点失效不允许转资',
@@ -143,26 +145,10 @@ export default class StepForm extends PureComponent {
     this.state = {
       data,
       current: 0,
-      checkAll: false,
-      checkedList: defaultCheckedList,
     };
     this.cacheData = data.map(item => ({ ...item }));
   }
 
-  onChange = checkedList => {
-    this.setState({
-      checkedList,
-      indeterminate: !!checkedList.length && checkedList.length < plainOptions.length,
-      checkAll: checkedList.length === plainOptions.length,
-    });
-  };
-  onCheckAllChange = e => {
-    this.setState({
-      checkedList: e.target.checked ? plainOptions : [],
-      indeterminate: false,
-      checkAll: e.target.checked,
-    });
-  };
   handleChange(value, key, column) {
     const newData = [...this.state.data];
     const target = newData.filter(item => key === item.key)[0];
@@ -219,23 +205,19 @@ export default class StepForm extends PureComponent {
 
     const stepFirst = (
       <div>
-        <CheckboxGroup
-          options={plainOptions}
-          value={this.state.checkedList}
-          onChange={this.onChange}
-        />
-        <div
-          style={{ borderTop: '1px solid #E9E9E9', padding: '8px 0', marginTop: 8 }}
-          className={styles.steps}
+        <Input placeholder="后评估标题" />
+        <Select
+          className={styles.slectRight}
+          placeholder="部门"
+          onChange={this.handleFormSubmit}
+          style={{ width: 180, marginLeft: 16 }}
         >
-          <Checkbox
-            indeterminate={this.state.indeterminate}
-            onChange={this.onCheckAllChange}
-            checked={this.state.checkAll}
-          >
-            选择全部
-          </Checkbox>
-        </div>
+          <Option value="1">网络部</Option>
+          <Option value="2">政企客户部</Option>
+          <Option value="3">网络管理中心</Option>
+          <Option value="4">市场部</Option>
+        </Select>
+        <TextArea rows={4} placeholder="后评估发起申请" />
       </div>
     );
 
@@ -301,17 +283,17 @@ export default class StepForm extends PureComponent {
 
     return (
       <Modal
-        title="转资申请"
+        title="后评估发起"
         visible={modalVisible}
         width={1000}
         onCancel={() => handleModalVisible()}
         footer={modalFooter}
       >
         <Steps current={this.state.current} className={styles.steps}>
-          <Step title="转资便利化配置" />
-          <Step title="资产定义" />
-          <Step title="费用分摊" />
-          <Step title="提交 ERP 系统" />
+          <Step title="发起" />
+          <Step title="选定项目" />
+          <Step title="组建工作组" />
+          <Step title="计划部审批" />
           <Step title="完成" />
         </Steps>
         <div className={styles.stepsContent}>{steps[this.state.current].content}</div>

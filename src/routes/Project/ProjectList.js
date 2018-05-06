@@ -46,7 +46,6 @@ export default class ProjectList extends PureComponent {
           <RadioButton value="progress">实施</RadioButton>
           <RadioButton value="waiting">收尾</RadioButton>
           <RadioButton value="progress">审计</RadioButton>
-          <RadioButton value="waiting">后评估</RadioButton>
         </RadioGroup>
         <Search className={styles.extraContentSearch} placeholder="请输入" onSearch={() => ({})} />
       </div>

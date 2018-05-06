@@ -12,6 +12,11 @@ const menuData = [
     path: 'projects',
   },
   {
+    name: '后评估',
+    icon: 'like',
+    path: 'assess',
+  },
+  {
     name: '文档',
     icon: 'folder',
     path: 'docs',
@@ -20,11 +25,6 @@ const menuData = [
     name: '报表',
     icon: 'dot-chart',
     path: 'dashboard/analysis',
-  },
-  {
-    name: '后评估',
-    icon: 'setting',
-    path: 'exception',
   },
   {
     name: '数据',

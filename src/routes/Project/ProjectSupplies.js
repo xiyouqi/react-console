@@ -132,7 +132,7 @@ export default class ProjectCost extends PureComponent {
         align: 'right',
       },
       {
-        title: '使用',
+        title: '使用量',
         dataIndex: 'cost_stock',
         align: 'right',
         render: value => {
@@ -140,7 +140,7 @@ export default class ProjectCost extends PureComponent {
         },
       },
       {
-        title: '库存',
+        title: '设计量',
         dataIndex: 'cost_stock',
         align: 'right',
       },

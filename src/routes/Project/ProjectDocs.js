@@ -34,7 +34,6 @@ export default class ProjectDocs extends PureComponent {
           <RadioButton value="progress">实施</RadioButton>
           <RadioButton value="waiting">收尾</RadioButton>
           <RadioButton value="progress">审计</RadioButton>
-          <RadioButton value="waiting">评估</RadioButton>
         </RadioGroup>
       </div>
     );

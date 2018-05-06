@@ -1,22 +1,27 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
 import { connect } from 'dva';
-import { List, Card, Row, Col, Radio, Input, Progress, Icon, Dropdown, Menu, Avatar } from 'antd';
+import { List, Card, Row, Col, Radio, Input, Avatar, Button, Badge, Select } from 'antd';
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-
-import styles from './ProjectList.less';
+import StepForm from './StepForm';
+import styles from './AssessList.less';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const { Search } = Input;
+const { Option } = Select;
 
 @connect(({ list, loading }) => ({
   list,
   loading: loading.models.list,
 }))
 export default class ProjectList extends PureComponent {
+  state = {
+    modalVisible: false,
+    current: 0,
+  };
+
   componentDidMount() {
     this.props.dispatch({
       type: 'list/fetch',
@@ -26,8 +31,15 @@ export default class ProjectList extends PureComponent {
     });
   }
 
+  handleModalVisible = flag => {
+    this.setState({
+      modalVisible: !!flag,
+    });
+  };
+
   render() {
     const { list: { list }, loading } = this.props;
+    const {current, modalVisible } = this.state;
 
     const Info = ({ title, value, bordered }) => (
       <div className={styles.headerInfo}>
@@ -41,14 +53,23 @@ export default class ProjectList extends PureComponent {
       <div className={styles.extraContent}>
         <RadioGroup defaultValue="all">
           <RadioButton value="all">全部</RadioButton>
-          <RadioButton value="progress">设计</RadioButton>
-          <RadioButton value="waiting">组织</RadioButton>
-          <RadioButton value="progress">实施</RadioButton>
-          <RadioButton value="waiting">收尾</RadioButton>
-          <RadioButton value="progress">审计</RadioButton>
-          <RadioButton value="waiting">后评估</RadioButton>
+          <RadioButton value="progress">发起</RadioButton>
+          <RadioButton value="waiting">准备</RadioButton>
+          <RadioButton value="progress">评审</RadioButton>
+          <RadioButton value="waiting">总结</RadioButton>
         </RadioGroup>
-        <Search className={styles.extraContentSearch} placeholder="请输入" onSearch={() => ({})} />
+        <Select
+          className={styles.slectRight}
+          placeholder="部门"
+          onChange={this.handleFormSubmit}
+          style={{ width: 180, marginLeft: 16 }}
+        >
+          <Option value="1">网络部</Option>
+          <Option value="2">政企客户部</Option>
+          <Option value="3">网络管理中心</Option>
+          <Option value="4">市场部</Option>
+        </Select>
+        <Search className={styles.extraContentSearch} placeholder="请输入项目名称" onSearch={() => ({})} />
       </div>
     );
 
@@ -59,40 +80,61 @@ export default class ProjectList extends PureComponent {
       total: 50,
     };
 
-    const ListContent = ({ data: { owner, createdAt, percent, status } }) => (
+    const states = [
+      '发起', '选定项目', '组建工作组', '计划部审批', '关闭',
+      '审批退回', '建立指标体系', '设定评估依据', '基础数据收集',
+      '初步评估', '部门评审', '决策会评审', '结果发布',
+    ];
+    const status = [
+      'processing', 'processing', 'processing', 'success', 'error',
+      'warning', 'processing', 'processing', 'processing',
+      'success', 'success', 'success', 'success',
+    ];
+
+    const ListContent = ({ data:{count = Math.ceil(Math.random() * 12)} }) => (
+
       <div className={styles.listContent}>
-        <div className={styles.listContentItem}>
-          <span>项目经理</span>
-          <p>{owner}</p>
-        </div>
-        <div className={styles.listContentItem}>
-          <span>时间</span>
-          <p>{moment(createdAt).format('YYYY-MM-DD')}</p>
-        </div>
-        <div className={styles.listContentItem}>
-          <Progress percent={percent} status={status} strokeWidth={6} style={{ width: 180 }} />
+        <div className={styles.listContentItem} style={{ width: 100 }}>
+          <p><Badge status={status[count]} text={states[count]} /></p>
         </div>
       </div>
     );
 
-    const menu = (
-      <Menu>
-        <Menu.Item>
-          <a>编辑</a>
-        </Menu.Item>
-        <Menu.Item>
-          <a>删除</a>
-        </Menu.Item>
-      </Menu>
+    const UploadBtn = (
+      <div>
+        <Button
+          icon="plus"
+          type="primary"
+          onClick={() => this.handleModalVisible(true)}
+          className={styles.uploadBtn}
+          style={{ marginTop: 8, marginBottom: 8 }}
+        >
+          发起项目后评估
+        </Button>
+      </div>
     );
 
-    const MoreBtn = () => (
-      <Dropdown overlay={menu}>
-        <a>
-          更多 <Icon type="down" />
-        </a>
-      </Dropdown>
-    );
+    const actions = [
+      '选定项目', '组建工作组', '审批', '建立指标体系', '',
+      '组建工作组', '设定评估依据', '基础数据收集', '初步评估',
+      '部门评审', '决策会评审', '结果发布', '',
+    ];
+
+    const orgs = {
+      '移动通信网' : '网络部',
+      '传输网' : '网络部',
+      '集客接入' : '政企客户部',
+      '业务网' : '政企客户部',
+      '支撑网网管系统' : '网络管理中心',
+      '业务支撑系统' : '业务支撑中心',
+      '信息化系统和信息安全系统' : '网络与信息安全管理部',
+      '局房土建及动力配套' : '市场部',
+    };
+
+    const parentMethods = {
+      handleModalVisible: this.handleModalVisible,
+      current,
+    };
 
     return (
       <PageHeaderLayout>
@@ -100,16 +142,16 @@ export default class ProjectList extends PureComponent {
           <Card bordered={false}>
             <Row>
               <Col sm={6} xs={24}>
-                <Info title="项目" value="10" bordered />
+                <Info title="发起" value="10" bordered />
               </Col>
               <Col sm={6} xs={24}>
-                <Info title="待办任务" value="8" bordered />
+                <Info title="准备" value="8" bordered />
               </Col>
               <Col sm={6} xs={24}>
-                <Info title="延期任务" value="2" bordered />
+                <Info title="评审" value="2" bordered />
               </Col>
               <Col sm={6} xs={24}>
-                <Info title="本周完成任务数" value="24" />
+                <Info title="总结" value="24" />
               </Col>
             </Row>
           </Card>
@@ -117,7 +159,7 @@ export default class ProjectList extends PureComponent {
           <Card
             className={styles.listCard}
             bordered={false}
-            title="项目列表"
+            title={UploadBtn}
             style={{ marginTop: 24 }}
             bodyStyle={{ padding: '0 32px 40px 32px' }}
             extra={extraContent}
@@ -128,19 +170,20 @@ export default class ProjectList extends PureComponent {
               loading={loading}
               pagination={paginationProps}
               dataSource={list}
-              renderItem={item => (
-                <List.Item actions={[<a>编辑</a>, <MoreBtn />]}>
+              renderItem={(item,  count = Math.ceil(Math.random() * 12)) => (
+                <List.Item actions={[<a>编辑</a>, <a>{actions[count]}</a>]}>
                   <List.Item.Meta
                     avatar={<Avatar src={item.logo} shape="square" size="large" />}
-                    title={<Link to={`/projects/${item.id}`}>{item.title}</Link>}
-                    description={`${item.type} / 乌鲁木齐分公司`}
+                    title={<Link to={`/projects/${item.id}`}>{orgs[item.type]}</Link>}
+                    description={`${item.type} ${count > 0 ? `/ ${  item.title}` : ''}`}
                   />
-                  <ListContent data={item} />
+                  <ListContent data={{count, ...item}} />
                 </List.Item>
               )}
             />
           </Card>
         </div>
+        <StepForm {...parentMethods} modalVisible={modalVisible} />
       </PageHeaderLayout>
     );
   }
