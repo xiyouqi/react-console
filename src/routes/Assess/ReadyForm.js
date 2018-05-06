@@ -11,30 +11,21 @@ import {
   // Popconfirm,
   Steps,
   Card,
-  Select,
+  List,
+  Avatar,
+  Tag,
 } from 'antd';
 import Result from 'components/Result';
+import EditableCell from './EditableCell';
 import styles from './StepForm.less';
 
 const { Step } = Steps;
-const { TextArea, Search } = Input;
-const { Option } = Select;
-
-const extra = (
-  <Fragment>
-    <Steps style={{ marginLeft: -42, width: 'calc(100% + 84px)' }} progressDot current={0}>
-      <Step title={<span style={{ fontSize: 14 }}>发起审批</span>} />
-      <Step title={<span style={{ fontSize: 14 }}>项目审批</span>} />
-      <Step title={<span style={{ fontSize: 14 }}>工作组审批</span>} />
-      <Step title={<span style={{ fontSize: 14 }}>完成</span>} />
-    </Steps>
-  </Fragment>
-);
+const { Search } = Input;
 
 const actions = (
   <Fragment>
     <Button type="primary">返回列表</Button>
-    <Button>查看审批记录</Button>
+    <Button>查看记录</Button>
   </Fragment>
 );
 
@@ -43,29 +34,31 @@ const actions = (
   list,
   loading: loading.models.list,
 }))
-export default class StepForm extends PureComponent {
+export default class ReadyForm extends PureComponent {
   constructor(props) {
     super(props);
     this.columns = [
       {
-        title: '项目名称',
-        dataIndex: 'title',
-        key: 'id',
+        title: '指标代码',
+        dataIndex: 'kpi_code',
+        key: 'kpi_code',
       },
       {
-        title: '项目分类',
-        dataIndex: 'type',
+        title: '一级指标名称',
+        dataIndex: 'kpi_level1',
       },
       {
-        title: '试运行时间',
-        render: () => '2017-06-06',
-        defaultSortOrder: 'descend',
-        sorter: (a, b) => a.age - b.age,
+        title: '二级指标名称',
+        dataIndex: 'kpi_level2',
       },
       {
-        title: '初步竣工验收完成时间',
-        render: () => '2017-12-06',
-        sorter: (a, b) => a.age - b.age,
+        title: '三级指标名称',
+        dataIndex: 'kpi_level3',
+      },
+      {
+        title: '指标说明',
+        dataIndex: 'kpi_caption',
+        width: '40%',
       },
     ];
     this.state = {
@@ -77,7 +70,7 @@ export default class StepForm extends PureComponent {
     this.props.dispatch({
       type: 'list/fetch',
       payload: {
-        count: 5,
+        count: 10,
       },
     });
   }
@@ -125,92 +118,97 @@ export default class StepForm extends PureComponent {
 
   render() {
     const { list: { list }, modalVisible, handleModalVisible } = this.props;
-    const formItemStyle = {
-      marginBottom: 16,
-    };
+
     const stepFirst = (
       <div>
-        <Input placeholder="后评估说明" style={formItemStyle} />
-        <Select
-          className={styles.slectRight}
-          placeholder="部门"
-          onChange={this.handleFormSubmit}
-          style={{ width: '100%', ...formItemStyle }}
-        >
-          <Option value="1">网络部</Option>
-          <Option value="2">政企客户部</Option>
-          <Option value="3">网络管理中心</Option>
-          <Option value="4">市场部</Option>
-        </Select>
-        <TextArea rows={6} placeholder="后评估发起申请" style={formItemStyle} />
-      </div>
-    );
-
-    const stepSecond = (
-      <div>
         <div className={styles.extraContent} style={{ marginBottom: 16, textAlign: 'right' }}>
-          <Search style={{ width: 240 }} placeholder="请输入项目名称或编号" onSearch={() => ({})} />
+          <Search style={{ width: 240 }} placeholder="请输入指标名称或编码" onSearch={() => ({})} />
+          <Button icon="arrow-up" type="primary" style={{ marginLeft: 16 }}>
+            导入
+          </Button>
+          <Button icon="delete" style={{ marginLeft: 16 }}>
+            删除
+          </Button>
         </div>
         <Table
           bordered
           dataSource={list}
           columns={this.columns}
-          rowSelection={{ columnWidth: 20, type: 'radio' }}
+          rowSelection={{ columnWidth: 20 }}
           rowKey="id"
           size="small"
         />
       </div>
     );
 
-    const orgs = {
-      移动通信网: '网络部',
-      传输网: '网络部',
-      集客接入: '政企客户部',
-      业务网: '政企客户部',
-      支撑网网管系统: '网络管理中心',
-      业务支撑系统: '业务支撑中心',
-      信息化系统和信息安全系统: '网络与信息安全管理部',
-      局房土建及动力配套: '市场部',
-    };
-
-    const teamColumns = [
+    const editColumns = [
       {
-        title: '姓名',
-        dataIndex: 'owner',
+        title: '指标代码',
+        dataIndex: 'kpi_code',
+        key: 'kpi_code',
       },
       {
-        title: '部门',
-        dataIndex: 'type',
-        render: value => orgs[value],
+        title: '一级指标名称',
+        dataIndex: 'kpi_level1',
       },
       {
-        title: '角色',
-        render: () => '主任',
+        title: '二级指标名称',
+        dataIndex: 'kpi_level2',
+      },
+      {
+        title: '三级指标名称',
+        dataIndex: 'kpi_level3',
+      },
+      {
+        title: '权重',
+        width: 150,
+        dataIndex: 'like',
+        render: (text = 0) => <EditableCell value={text} />,
+      },
+      {
+        title: '权重系数',
+        width: 150,
+        dataIndex: 'newUser',
+        render: (text = 0) => <EditableCell value={text} />,
+      },
+      {
+        title: '档次标准',
+        width: 150,
+        dataIndex: 'star',
+        render: (text = 0) => <EditableCell value={text} />,
       },
     ];
+
+    const stepSecond = (
+      <div>
+        <Table bordered dataSource={list} columns={editColumns} rowKey="id" size="small" />
+      </div>
+    );
 
     const stepThird = (
       <div>
         <div className={styles.extraContent} style={{ marginBottom: 16, textAlign: 'right' }}>
-          <Select
-            className={styles.slectRight}
-            placeholder="部门"
-            style={{ width: 180, marginRight: 16 }}
-          >
-            <Option value="1">网络部</Option>
-            <Option value="2">政企客户部</Option>
-            <Option value="3">网络管理中心</Option>
-            <Option value="4">市场部</Option>
-          </Select>
-          <Search style={{ width: 240 }} placeholder="请输入项目名称或编号" onSearch={() => ({})} />
+          <Button icon="arrow-up" type="primary" style={{ marginLeft: 16 }}>
+            上传
+          </Button>
         </div>
-        <Table
-          bordered
-          dataSource={list}
-          columns={teamColumns}
-          rowSelection={{ columnWidth: 20 }}
+        <List
+          size="large"
           rowKey="id"
-          size="small"
+          loading={this.props.loading}
+          dataSource={list}
+          renderItem={item => (
+            <List.Item actions={[<a>编辑</a>]}>
+              <List.Item.Meta
+                avatar={<Avatar src={item.doc_icon} shape="square" size="large" />}
+                title={<a href={item.href}>{item.doc_title}</a>}
+                description={item.subDescription}
+              />
+              <div className={styles.projectTag}>
+                {item.doc_tag.split(',').map(tag => <Tag>{tag}</Tag>)}
+              </div>
+            </List.Item>
+          )}
         />
       </div>
     );
@@ -220,8 +218,7 @@ export default class StepForm extends PureComponent {
           <Result
             type="success"
             title="提交成功"
-            description="已提交计划部审核，请等待。"
-            extra={extra}
+            description="初步评估完成，进入评审阶段。"
             actions={actions}
             style={{ width: '100%' }}
             rowKey="materielName"
@@ -281,11 +278,11 @@ export default class StepForm extends PureComponent {
         footer={modalFooter}
       >
         <Steps current={this.state.current} className={styles.steps}>
-          <Step title="发起" />
-          <Step title="选定项目" />
-          <Step title="组建工作组" />
-          <Step title="计划部审批" />
-          <Step title="完成" />
+          <Step title="建立指标体系" />
+          <Step title="设定评估依据" />
+          <Step title="基础数据收集" />
+          <Step title="初步评估" />
+          <Step title="准备完成" />
         </Steps>
         <div className={styles.stepsContent}>{steps[this.state.current].content}</div>
       </Modal>

@@ -5,6 +5,7 @@ import { List, Card, Row, Col, Radio, Input, Avatar, Button, Badge, Select } fro
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import StepForm from './StepForm';
+import ReadyForm from './ReadyForm';
 import styles from './AssessList.less';
 
 const RadioButton = Radio.Button;
@@ -19,6 +20,7 @@ const { Option } = Select;
 export default class ProjectList extends PureComponent {
   state = {
     modalVisible: false,
+    modalReadyVisible: false,
     current: 0,
   };
 
@@ -37,9 +39,15 @@ export default class ProjectList extends PureComponent {
     });
   };
 
+  handleModalReadyVisible = flag => {
+    this.setState({
+      modalReadyVisible: !!flag,
+    });
+  };
+
   render() {
     const { list: { list }, loading } = this.props;
-    const {current, modalVisible } = this.state;
+    const { current, modalVisible } = this.state;
 
     const Info = ({ title, value, bordered }) => (
       <div className={styles.headerInfo}>
@@ -69,7 +77,11 @@ export default class ProjectList extends PureComponent {
           <Option value="3">网络管理中心</Option>
           <Option value="4">市场部</Option>
         </Select>
-        <Search className={styles.extraContentSearch} placeholder="请输入项目名称" onSearch={() => ({})} />
+        <Search
+          className={styles.extraContentSearch}
+          placeholder="请输入项目名称"
+          onSearch={() => ({})}
+        />
       </div>
     );
 
@@ -81,21 +93,42 @@ export default class ProjectList extends PureComponent {
     };
 
     const states = [
-      '发起', '选定项目', '组建工作组', '计划部审批', '关闭',
-      '审批退回', '建立指标体系', '设定评估依据', '基础数据收集',
-      '初步评估', '部门评审', '决策会评审', '结果发布',
+      '发起',
+      '选定项目',
+      '组建工作组',
+      '计划部审批',
+      '关闭',
+      '审批退回',
+      '建立指标体系',
+      '设定评估依据',
+      '基础数据收集',
+      '初步评估',
+      '部门评审',
+      '决策会评审',
+      '结果发布',
     ];
     const status = [
-      'processing', 'processing', 'processing', 'success', 'error',
-      'warning', 'processing', 'processing', 'processing',
-      'success', 'success', 'success', 'success',
+      'processing',
+      'processing',
+      'processing',
+      'success',
+      'error',
+      'warning',
+      'processing',
+      'processing',
+      'processing',
+      'success',
+      'success',
+      'success',
+      'success',
     ];
 
-    const ListContent = ({ data:{count = Math.ceil(Math.random() * 12)} }) => (
-
+    const ListContent = ({ data: { count = Math.ceil(Math.random() * 12) } }) => (
       <div className={styles.listContent}>
         <div className={styles.listContentItem} style={{ width: 100 }}>
-          <p><Badge status={status[count]} text={states[count]} /></p>
+          <p>
+            <Badge status={status[count]} text={states[count]} />
+          </p>
         </div>
       </div>
     );
@@ -111,24 +144,43 @@ export default class ProjectList extends PureComponent {
         >
           发起项目后评估
         </Button>
+        <Button
+          icon="plus"
+          type="primary"
+          onClick={() => this.handleModalReadyVisible(true)}
+          className={styles.uploadBtn}
+          style={{ marginTop: 8, marginBottom: 8 }}
+        >
+          编制项目后评估
+        </Button>
       </div>
     );
 
     const actions = [
-      '选定项目', '组建工作组', '审批', '建立指标体系', '',
-      '组建工作组', '设定评估依据', '基础数据收集', '初步评估',
-      '部门评审', '决策会评审', '结果发布', '',
+      '选定项目',
+      '组建工作组',
+      '审批',
+      '建立指标体系',
+      '',
+      '组建工作组',
+      '设定评估依据',
+      '基础数据收集',
+      '初步评估',
+      '部门评审',
+      '决策会评审',
+      '结果发布',
+      '',
     ];
 
     const orgs = {
-      '移动通信网' : '网络部',
-      '传输网' : '网络部',
-      '集客接入' : '政企客户部',
-      '业务网' : '政企客户部',
-      '支撑网网管系统' : '网络管理中心',
-      '业务支撑系统' : '业务支撑中心',
-      '信息化系统和信息安全系统' : '网络与信息安全管理部',
-      '局房土建及动力配套' : '市场部',
+      移动通信网: '网络部',
+      传输网: '网络部',
+      集客接入: '政企客户部',
+      业务网: '政企客户部',
+      支撑网网管系统: '网络管理中心',
+      业务支撑系统: '业务支撑中心',
+      信息化系统和信息安全系统: '网络与信息安全管理部',
+      局房土建及动力配套: '市场部',
     };
 
     const parentMethods = {
@@ -170,20 +222,24 @@ export default class ProjectList extends PureComponent {
               loading={loading}
               pagination={paginationProps}
               dataSource={list}
-              renderItem={(item,  count = Math.ceil(Math.random() * 12)) => (
+              renderItem={(item, count = Math.ceil(Math.random() * 12)) => (
                 <List.Item actions={[<a>编辑</a>, <a>{actions[count]}</a>]}>
                   <List.Item.Meta
                     avatar={<Avatar src={item.logo} shape="square" size="large" />}
                     title={<Link to={`/projects/${item.id}`}>{orgs[item.type]}</Link>}
-                    description={`${item.type} ${count > 0 ? `/ ${  item.title}` : ''}`}
+                    description={`${item.type} ${count > 0 ? `/ ${item.title}` : ''}`}
                   />
-                  <ListContent data={{count, ...item}} />
+                  <ListContent data={{ count, ...item }} />
                 </List.Item>
               )}
             />
           </Card>
         </div>
         <StepForm {...parentMethods} modalVisible={modalVisible} />
+        <ReadyForm
+          {...{ handleModalVisible: this.handleModalReadyVisible }}
+          modalVisible={this.state.modalReadyVisible}
+        />
       </PageHeaderLayout>
     );
   }
