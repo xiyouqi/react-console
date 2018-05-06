@@ -13,7 +13,7 @@ const { RangePicker } = DatePicker;
 const rankingListData = [];
 for (let i = 0; i < 7; i += 1) {
   rankingListData.push({
-    title: `工专路 ${i} 号店`,
+    title: `项目 ${i}`,
     total: 323234,
   });
 }

@@ -104,12 +104,22 @@ export default class ProjectCost extends PureComponent {
         dataIndex: 'cost_unit',
       },
       {
+        title: '项目定额',
+        dataIndex: 'cost_num',
+        render: value => {
+          return Math.ceil(value * Math.random() * 110 / 100);
+        },
+        align: 'right',
+      },
+      {
         title: '数量',
         dataIndex: 'cost_num',
+        align: 'right',
       },
       {
         title: '单价',
         dataIndex: 'cost_price',
+        align: 'right',
       },
       {
         title: '使用',

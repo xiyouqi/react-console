@@ -25,7 +25,7 @@ const { RangePicker } = DatePicker;
 const rankingListData = [];
 for (let i = 0; i < 7; i += 1) {
   rankingListData.push({
-    title: `工专路 ${i} 号店`,
+    title: `项目 ${i}`,
     total: 323234,
   });
 }
@@ -157,17 +157,18 @@ export default class Analysis extends Component {
         key: 'index',
       },
       {
-        title: '搜索关键词',
+        title: '项目',
         dataIndex: 'keyword',
         key: 'keyword',
         render: text => <a href="/">{text}</a>,
       },
       {
-        title: '用户数',
+        title: '签到数',
         dataIndex: 'count',
         key: 'count',
         sorter: (a, b) => a.count - b.count,
         className: styles.alignRight,
+        align: 'right',
       },
       {
         title: '周涨幅',
@@ -196,10 +197,10 @@ export default class Analysis extends Component {
       <Fragment>
         <Row gutter={24}>
           <Col xl={18} lg={24} md={24} sm={24} xs={24}>
-            <Card title="项目进行情况" bordered={false}>
+            <Card title="项目综合统计" bordered={false}>
               <Row>
                 <Col md={6} sm={12} xs={24}>
-                  <NumberInfo subTitle="项目总数" suffix="个" total={numeral(7245).format('0,0')} />
+                  <NumberInfo subTitle="项目总数" suffix="个" total={numeral(2389).format('0,0')} />
                 </Col>
                 <Col md={6} sm={12} xs={24}>
                   <NumberInfo
@@ -212,30 +213,27 @@ export default class Analysis extends Component {
                   <NumberInfo
                     subTitle="进行中项目"
                     suffix="个"
-                    total={numeral(5200).format('0,0')}
+                    total={numeral(850).format('0,0')}
                   />
                 </Col>
                 <Col md={6} sm={12} xs={24}>
                   <NumberInfo
                     subTitle="已完成项目"
                     suffix="个"
-                    total={numeral(1800).format('0,0')}
+                    total={numeral(503).format('0,0')}
                   />
                 </Col>
               </Row>
               <div className={styles.mapChart}>
                 <Tooltip title="等待后期实现">
-                  <img
-                    src="https://gw.alipayobjects.com/zos/rmsportal/HBWnDEUXCnGnGrRfrpKa.png"
-                    alt="map"
-                  />
+                  <img src="../src/assets/map.png" alt="map" />
                 </Tooltip>
               </div>
             </Card>
           </Col>
           <Col xl={6} lg={24} md={24} sm={24} xs={24}>
             <Card
-              title="已完成项目占比"
+              title="项目综合完成率"
               bodyStyle={{ textAlign: 'center', fontSize: 0 }}
               bordered={false}
             >
@@ -243,12 +241,12 @@ export default class Analysis extends Component {
             </Card>
             <Card
               className={styles.grade}
-              title="项目完成效率"
+              title="项目任务执行效率"
               style={{ marginBottom: 24 }}
               bodyStyle={{ textAlign: 'center' }}
               bordered={false}
             >
-              <Gauge title="完成效率" height={180} percent={65} />
+              <Gauge title="项目执行效率" height={180} percent={65} />
             </Card>
           </Col>
         </Row>
@@ -257,14 +255,14 @@ export default class Analysis extends Component {
           <Col {...topColResponsiveProps}>
             <ChartCard
               bordered={false}
-              title="项目总数"
+              title="项目任务总数"
               action={
                 <Tooltip title="指标说明">
                   <Icon type="info-circle-o" />
                 </Tooltip>
               }
               total={() => <span dangerouslySetInnerHTML={{ __html: 1265 }} />}
-              footer={<Field label="日均销售额" value={`${numeral(12423).format('0,0')}`} />}
+              footer={<Field label="日均任务完成" value={`${numeral(103).format('0,0')}`} />}
               contentHeight={46}
             >
               <Trend flag="up" style={{ marginRight: 16 }}>
@@ -278,29 +276,13 @@ export default class Analysis extends Component {
           <Col {...topColResponsiveProps}>
             <ChartCard
               bordered={false}
-              title="项目访问量"
-              action={
-                <Tooltip title="指标说明">
-                  <Icon type="info-circle-o" />
-                </Tooltip>
-              }
-              total={numeral(8846).format('0,0')}
-              footer={<Field label="日访问量" value={numeral(1234).format('0,0')} />}
-              contentHeight={46}
-            >
-              <MiniArea color="#975FE4" data={visitData} />
-            </ChartCard>
-          </Col>
-          <Col {...topColResponsiveProps}>
-            <ChartCard
-              bordered={false}
               title="延误任务"
               action={
                 <Tooltip title="指标说明">
                   <Icon type="info-circle-o" />
                 </Tooltip>
               }
-              total={numeral(6560).format('0,0')}
+              total={numeral(204).format('0,0')}
               footer={<Field label="转化率" value="60%" />}
               contentHeight={46}
             >
@@ -310,7 +292,23 @@ export default class Analysis extends Component {
           <Col {...topColResponsiveProps}>
             <ChartCard
               bordered={false}
-              title="项目进展"
+              title="项目成本趋势"
+              action={
+                <Tooltip title="指标说明">
+                  <Icon type="info-circle-o" />
+                </Tooltip>
+              }
+              total={numeral(8846).format('0,0')}
+              footer={<Field label="本日领料" value={numeral(1234).format('0,0')} />}
+              contentHeight={46}
+            >
+              <MiniArea color="#975FE4" data={visitData} />
+            </ChartCard>
+          </Col>
+          <Col {...topColResponsiveProps}>
+            <ChartCard
+              bordered={false}
+              title="项目综合成本进度"
               action={
                 <Tooltip title="指标说明">
                   <Icon type="info-circle-o" />
@@ -369,7 +367,7 @@ export default class Analysis extends Component {
             <Card
               loading={loading}
               bordered={false}
-              title="线上热门搜索"
+              title="现场签到统计"
               extra={iconGroup}
               style={{ marginTop: 24 }}
             >
@@ -378,7 +376,7 @@ export default class Analysis extends Component {
                   <NumberInfo
                     subTitle={
                       <span>
-                        搜索用户数
+                        签到数
                         <Tooltip title="指标文案">
                           <Icon style={{ marginLeft: 8 }} type="info-circle-o" />
                         </Tooltip>
@@ -392,13 +390,7 @@ export default class Analysis extends Component {
                   <MiniArea line height={45} data={visitData2} />
                 </Col>
                 <Col sm={12} xs={24} style={{ marginBottom: 24 }}>
-                  <NumberInfo
-                    subTitle="人均搜索次数"
-                    total={2.7}
-                    status="down"
-                    subTotal={26.2}
-                    gap={8}
-                  />
+                  <NumberInfo subTitle="签到率" total={85.47} status="up" subTotal={3.2} gap={8} />
                   <MiniArea line height={45} data={visitData2} />
                 </Col>
               </Row>

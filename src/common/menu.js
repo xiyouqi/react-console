@@ -22,6 +22,11 @@ const menuData = [
     path: 'dashboard/analysis',
   },
   {
+    name: '后评估',
+    icon: 'setting',
+    path: 'exception',
+  },
+  {
     name: '数据',
     icon: 'database',
     path: 'data',
@@ -47,11 +52,6 @@ const menuData = [
         path: 'construction',
       },
     ],
-  },
-  {
-    name: '后评估',
-    icon: 'setting',
-    path: 'exception',
   },
   {
     name: '账户',
