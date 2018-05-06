@@ -225,9 +225,7 @@ export default class Analysis extends Component {
                 </Col>
               </Row>
               <div className={styles.mapChart}>
-                <Tooltip title="等待后期实现">
-                  <img src="../src/assets/map.png" alt="map" />
-                </Tooltip>
+                <img src="../src/assets/map.png" alt="map" />
               </div>
             </Card>
           </Col>

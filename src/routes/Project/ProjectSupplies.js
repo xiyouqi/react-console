@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { Card, Radio, Divider, Button, Input, Select } from 'antd';
+import { Card, Radio, Divider, Button, Input, Select, Badge } from 'antd';
 import StandardTable from 'components/StandardTable';
 
 import styles from './ProjectCost.less';
@@ -90,10 +90,20 @@ export default class ProjectCost extends PureComponent {
       </div>
     );
 
+    const states = ['待挂号', '待出库', '采购中', '已领用'];
+    const status = ['warning', 'processing', 'default', 'success'];
+
     const columns = [
       {
-        title: '材料名称',
+        title: '物料名称',
         dataIndex: 'cost_name',
+      },
+      {
+        title: '物料编码',
+        dataIndex: 'cost_stock',
+        render: (value) => {
+          return value % 4 ? Math.ceil(Math.random() * 1000000) : null;
+        },
       },
       {
         title: '规格',
@@ -107,7 +117,7 @@ export default class ProjectCost extends PureComponent {
         title: '项目定额',
         dataIndex: 'cost_num',
         render: value => {
-          return Math.ceil(value * Math.random() * 110 / 100);
+          return Math.ceil(value * Math.random() * 2);
         },
         align: 'right',
       },
@@ -135,12 +145,21 @@ export default class ProjectCost extends PureComponent {
         align: 'right',
       },
       {
+        title: '物料状态',
+        align: 'center',
+        dataIndex: 'cost_stock',
+        render: (value) => (
+          <span>
+            <Badge status={status[value % 4]} text={states[value % 4]} />
+          </span>
+        ),
+      },
+      {
         title: '操作',
-        render: (value, record) => (
+        dataIndex: 'cost_stock',
+        render: (value) => (
           <Fragment>
-            <a href="#123">{record.cost_stock ? '领料申请' : '采购申请'}</a>
-            <Divider type="vertical" />
-            <a href="#123">退料</a>
+            {value % 4 ? <a href="#123">退料</a> : null}
           </Fragment>
         ),
       },
@@ -148,7 +167,7 @@ export default class ProjectCost extends PureComponent {
 
     const UploadBtn = (
       <div>
-        <Button
+        {/* <Button
           icon="car"
           type="primary"
           onClick={() => this.handleModalVisible(true)}
@@ -156,9 +175,10 @@ export default class ProjectCost extends PureComponent {
           style={{ marginTop: 8, marginBottom: 8 }}
         >
           采购申请
-        </Button>
+        </Button> */}
         <Button
           icon="export"
+          type="primary"
           onClick={() => this.handleModalVisible(true)}
           className={styles.uploadBtn}
           style={{ marginTop: 8, marginBottom: 8, marginLeft: 8 }}

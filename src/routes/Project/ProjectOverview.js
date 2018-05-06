@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import { Row, Col, Card, DatePicker, Tabs, Tooltip, Icon } from 'antd';
 import numeral from 'numeral';
-import { MiniArea, MiniBar, Field, ChartCard, MiniProgress, Bar } from 'components/Charts';
+import { MiniArea, MiniBar, Field, ChartCard, MiniProgress, Bar, Pie } from 'components/Charts';
 import Trend from 'components/Trend';
 import { getTimeDistance } from '../../utils/utils';
 import styles from './ProjectOverview.less';
@@ -70,7 +70,7 @@ export default class Analysis extends Component {
   render() {
     const { rangePickerValue } = this.state;
     const { chart, loading } = this.props;
-    const { visitData, salesData } = chart;
+    const { visitData } = chart;
 
     const salesExtra = (
       <div className={styles.salesExtraWrap}>
@@ -105,13 +105,40 @@ export default class Analysis extends Component {
       style: { marginBottom: 24 },
     };
 
+    const salesPieData = [
+      {
+        x: '未挂号',
+        y: 244,
+      },
+      {
+        x: '有库存',
+        y: 267,
+      },
+      {
+        x: '无库存',
+        y: 244,
+      },
+      {
+        x: '采购中',
+        y: 244,
+      },
+    ];
+
+    const salesData = [];
+    for (let i = 0; i < 12; i += 1) {
+      salesData.push({
+        x: `${i + 1} 周`,
+        y: Math.floor(Math.random() * 10) + 85,
+      });
+    }
+
     return (
       <Fragment>
         <Row gutter={24}>
           <Col {...topColResponsiveProps}>
             <ChartCard
               bordered={false}
-              title="项目周期"
+              title="成本进度"
               action={
                 <Tooltip title="指标说明">
                   <Icon type="info-circle-o" />
@@ -132,14 +159,14 @@ export default class Analysis extends Component {
           <Col {...topColResponsiveProps}>
             <ChartCard
               bordered={false}
-              title="项目访问量"
+              title="任务完成"
               action={
                 <Tooltip title="指标说明">
                   <Icon type="info-circle-o" />
                 </Tooltip>
               }
-              total={numeral(8846).format('0,0')}
-              footer={<Field label="日访问量" value={numeral(1234).format('0,0')} />}
+              total={numeral(238).format('0,0')}
+              footer={<Field label="周任务" value={numeral(12).format('0,0')} />}
               contentHeight={46}
             >
               <MiniArea color="#975FE4" data={visitData} />
@@ -154,7 +181,7 @@ export default class Analysis extends Component {
                   <Icon type="info-circle-o" />
                 </Tooltip>
               }
-              total={numeral(6560).format('0,0')}
+              total={numeral(34).format('0,0')}
               footer={<Field label="延误率" value="10%" />}
               contentHeight={46}
             >
@@ -191,26 +218,30 @@ export default class Analysis extends Component {
         <Card loading={loading} bordered={false} bodyStyle={{ padding: 0 }}>
           <div className={styles.salesCard}>
             <Tabs tabBarExtraContent={salesExtra} size="large" tabBarStyle={{ marginBottom: 24 }}>
-              <TabPane tab="项目完成进度" key="sales">
-                <Row>
-                  <Col xl={16} lg={12} md={12} sm={24} xs={24}>
+              <TabPane tab="项目进度" key="sales">
+                <Row gutter={16}>
+                  <Col xl={12} lg={12} md={12} sm={24} xs={24}>
                     <div className={styles.salesBar}>
-                      <Bar height={295} title="项目完成率" data={salesData} />
+                      <Bar height={295} title="任务完成率" data={salesData} />
                     </div>
                   </Col>
-                  <Col xl={8} lg={12} md={12} sm={24} xs={24}>
-                    <div className={styles.salesRank}>
-                      <h4 className={styles.rankingTitle}>项目完成进度排名</h4>
-                      <ul className={styles.rankingList}>
-                        {rankingListData.map((item, i) => (
-                          <li key={item.title}>
-                            <span className={i < 3 ? styles.active : ''}>{i + 1}</span>
-                            <span>{item.title}</span>
-                            <span>{numeral(item.total).format('0,0')}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                  <Col xl={12} lg={12} md={12} sm={24} xs={24}>
+                    <h4 style={{ marginTop: 8, marginBottom: 24 }}>供应链进度</h4>
+                    <Pie
+                      hasLegend
+                      subTitle="物料状态"
+                      total={() => (
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: salesPieData.reduce((pre, now) => now.y + pre, 0),
+                          }}
+                        />
+                      )}
+                      data={salesPieData}
+                      valueFormat={val => <span dangerouslySetInnerHTML={{ __html: val }} />}
+                      height={248}
+                      lineWidth={4}
+                    />
                   </Col>
                 </Row>
               </TabPane>
