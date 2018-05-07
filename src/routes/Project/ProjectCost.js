@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { Card, Radio, Divider, Button, Input, Select } from 'antd';
+import { Card, Radio, Divider, Button, Input, Select, Badge } from 'antd';
 import StandardTable from 'components/StandardTable';
 import StepForm from './StepForm';
 
@@ -99,6 +99,9 @@ export default class ProjectCost extends PureComponent {
       </div>
     );
 
+    const states = ['不可转资', '可转资', '待转资', '已转资'];
+    const status = ['error', 'processing', 'default', 'success'];
+
     const columns = [
       {
         title: '资产标签号',
@@ -125,16 +128,26 @@ export default class ProjectCost extends PureComponent {
         dataIndex: 'as_share_expense',
       },
       {
+        title: '转资状态',
+        dataIndex: 'cost_stock',
+        render: (value) => (
+          <span>
+            <Badge status={status[value % 4]} text={states[value % 4]} />
+          </span>
+        ),
+      },
+      {
         title: '合计',
         dataIndex: 'as_amount_sum',
       },
       {
         title: '操作',
-        render: () => (
+        dataIndex: 'cost_stock',
+        render: (value) => (
           <Fragment>
-            <a href="#">处理</a>
+            {value % 4 !== 3 ? <a href="#">处理</a> : null}
             <Divider type="vertical" />
-            <a href="#">转资</a>
+            {value % 4 === 1 ? <a href="#">转资</a> : null}
           </Fragment>
         ),
       },
@@ -170,6 +183,7 @@ export default class ProjectCost extends PureComponent {
             columns={columns}
             onSelectRow={this.handleSelectRows}
             onChange={this.handleStandardTableChange}
+            rowKey="id"
           />
         </div>
         <StepForm {...parentMethods} modalVisible={modalVisible} />

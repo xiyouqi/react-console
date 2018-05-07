@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { Card, Radio, Divider, Button, Input, Select, Badge } from 'antd';
+import { Card, Radio, Button, Input, Select, Badge } from 'antd';
 import StandardTable from 'components/StandardTable';
 
 import styles from './ProjectCost.less';
@@ -183,7 +183,7 @@ export default class ProjectCost extends PureComponent {
           className={styles.uploadBtn}
           style={{ marginTop: 8, marginBottom: 8, marginLeft: 8 }}
         >
-          领料申请
+          出库申请
         </Button>
       </div>
     );

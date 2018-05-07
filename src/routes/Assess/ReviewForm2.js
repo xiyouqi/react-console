@@ -1,24 +1,24 @@
 import React, { PureComponent, Fragment } from 'react';
-import { connect } from 'dva';
+import moment from 'moment';
 import {
   Button,
   Modal,
   message,
   Form,
   Input,
-  // Checkbox,
-  Table,
-  // Popconfirm,
   Steps,
   Card,
   Select,
+  Radio,
+  DatePicker,
 } from 'antd';
 import Result from 'components/Result';
 import styles from './StepForm.less';
 
 const { Step } = Steps;
-const { TextArea, Search } = Input;
+const { TextArea } = Input;
 const { Option } = Select;
+const { RadioGroup } = Radio;
 
 const extra = (
   <Fragment>
@@ -39,11 +39,7 @@ const actions = (
 );
 
 @Form.create()
-@connect(({ list, loading }) => ({
-  list,
-  loading: loading.models.list,
-}))
-export default class StepForm extends PureComponent {
+export default class ReviewForm extends PureComponent {
   constructor(props) {
     super(props);
     this.columns = [
@@ -71,15 +67,6 @@ export default class StepForm extends PureComponent {
     this.state = {
       current: 0,
     };
-  }
-
-  componentDidMount() {
-    this.props.dispatch({
-      type: 'list/fetch',
-      payload: {
-        count: 5,
-      },
-    });
   }
 
   handleChange(value, key, column) {
@@ -124,17 +111,16 @@ export default class StepForm extends PureComponent {
   }
 
   render() {
-    const { list: { list }, modalVisible, handleModalVisible } = this.props;
+    const { modalVisible, handleModalVisible } = this.props;
     const formItemStyle = {
       marginBottom: 16,
     };
     const stepFirst = (
       <div>
-        <Input placeholder="后评估说明" style={formItemStyle} />
+        <Input placeholder="部门评审标题" style={formItemStyle} />
         <Select
           className={styles.slectRight}
           placeholder="部门"
-          onChange={this.handleFormSubmit}
           style={{ width: '100%', ...formItemStyle }}
         >
           <Option value="1">网络部</Option>
@@ -142,76 +128,24 @@ export default class StepForm extends PureComponent {
           <Option value="3">网络管理中心</Option>
           <Option value="4">市场部</Option>
         </Select>
-        <TextArea rows={6} placeholder="后评估发起申请" style={formItemStyle} />
+        <DatePicker defaultValue={moment('2015/01/01', 'YYYY/MM/DD')} format="YYYY/MM/DD"  style={formItemStyle} placeholder="评审日期" />
+        <RadioGroup onChange={this.onChange} value={this.state.value} style={formItemStyle} >
+          <Radio value={1}>通过</Radio>
+          <Radio value={2}>退回</Radio>
+        </RadioGroup>
+        <TextArea rows={6} placeholder="部门评审意见" style={formItemStyle} />
       </div>
     );
 
     const stepSecond = (
       <div>
-        <div className={styles.extraContent} style={{ marginBottom: 16, textAlign: 'right' }}>
-          <Search style={{ width: 240 }} placeholder="请输入项目名称或编号" onSearch={() => ({})} />
-        </div>
-        <Table
-          bordered
-          dataSource={list}
-          columns={this.columns}
-          rowSelection={{ columnWidth: 20, type: 'radio' }}
-          rowKey="id"
-          size="small"
-        />
-      </div>
-    );
-
-    const orgs = {
-      移动通信网: '网络部',
-      传输网: '网络部',
-      集客接入: '政企客户部',
-      业务网: '政企客户部',
-      支撑网网管系统: '网络管理中心',
-      业务支撑系统: '业务支撑中心',
-      信息化系统和信息安全系统: '网络与信息安全管理部',
-      局房土建及动力配套: '市场部',
-    };
-
-    const teamColumns = [
-      {
-        title: '姓名',
-        dataIndex: 'owner',
-      },
-      {
-        title: '部门',
-        dataIndex: 'type',
-        render: value => orgs[value],
-      },
-      {
-        title: '角色',
-        render: () => '主任',
-      },
-    ];
-
-    const stepThird = (
-      <div>
-        <div className={styles.extraContent} style={{ marginBottom: 16, textAlign: 'right' }}>
-          <Select
-            className={styles.slectRight}
-            placeholder="部门"
-            style={{ width: 180, marginRight: 16 }}
-          >
-            <Option value="1">网络部</Option>
-            <Option value="2">政企客户部</Option>
-            <Option value="3">网络管理中心</Option>
-            <Option value="4">市场部</Option>
-          </Select>
-          <Search style={{ width: 240 }} placeholder="请输入项目名称或编号" onSearch={() => ({})} />
-        </div>
-        <Table
-          bordered
-          dataSource={list}
-          columns={teamColumns}
-          rowSelection={{ columnWidth: 20 }}
-          rowKey="id"
-          size="small"
-        />
+        <Input placeholder="决策会评审标题" style={formItemStyle} />
+        <DatePicker defaultValue={moment('2015/01/01', 'YYYY/MM/DD')} format="YYYY/MM/DD"  style={formItemStyle} placeholder="评审日期" />
+        <RadioGroup onChange={this.onChange} value={this.state.value} style={formItemStyle} >
+          <Radio value={1}>通过</Radio>
+          <Radio value={2}>退回</Radio>
+        </RadioGroup>
+        <TextArea rows={6} placeholder="决策会评审意见" style={formItemStyle} />
       </div>
     );
     const stepLast = (
@@ -238,10 +172,6 @@ export default class StepForm extends PureComponent {
       {
         title: 'Second',
         content: stepSecond,
-      },
-      {
-        title: 'Third',
-        content: stepThird,
       },
       {
         title: 'Last',
@@ -274,18 +204,16 @@ export default class StepForm extends PureComponent {
 
     return (
       <Modal
-        title="后评估准备"
+        title="后评估评审"
         visible={modalVisible}
         width={1000}
         onCancel={() => handleModalVisible()}
         footer={modalFooter}
       >
         <Steps current={this.state.current} className={styles.steps}>
-          <Step title="发起" />
-          <Step title="选定项目" />
-          <Step title="组建工作组" />
-          <Step title="计划部审批" />
-          <Step title="完成" />
+          <Step title="部门评审" />
+          <Step title="决策会评审" />
+          <Step title="评审完成" />
         </Steps>
         <div className={styles.stepsContent}>{steps[this.state.current].content}</div>
       </Modal>

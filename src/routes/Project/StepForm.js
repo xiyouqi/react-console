@@ -1,4 +1,5 @@
 import React, { PureComponent, Fragment } from 'react';
+import { connect } from 'dva';
 import {
   Button,
   Modal,
@@ -10,6 +11,7 @@ import {
   Popconfirm,
   Steps,
   Card,
+  Badge,
 } from 'antd';
 import Result from 'components/Result';
 
@@ -17,21 +19,10 @@ import styles from './StepForm.less';
 
 const { Step } = Steps;
 
-const extra = (
-  <Fragment>
-    <Steps style={{ marginLeft: -42, width: 'calc(100% + 84px)' }} progressDot current={1}>
-      <Step title={<span style={{ fontSize: 14 }}>资产生成</span>} />
-      <Step title={<span style={{ fontSize: 14 }}>转资申请</span>} />
-      <Step title={<span style={{ fontSize: 14 }}>ERP 系统处理</span>} />
-      <Step title={<span style={{ fontSize: 14 }}>完成</span>} />
-    </Steps>
-  </Fragment>
-);
-
 const actions = (
   <Fragment>
-    <Button type="primary">返回列表</Button>
-    <Button>查看项目</Button>
+    <Button type="primary">确认资产</Button>
+    <Button>查看明细</Button>
     <Button>打 印</Button>
   </Fragment>
 );
@@ -83,6 +74,10 @@ const EditableCell = ({ editable, value, onChange }) => (
     )}
   </div>
 );
+@connect(({ list, loading }) => ({
+  list,
+  loading: loading.models.rule,
+}))
 @Form.create()
 export default class StepForm extends PureComponent {
   constructor(props) {
@@ -215,7 +210,7 @@ export default class StepForm extends PureComponent {
   }
 
   render() {
-    const { modalVisible, handleModalVisible } = this.props;
+    const { list: { list }, modalVisible, handleModalVisible } = this.props;
 
     const stepFirst = (
       <div>
@@ -239,16 +234,163 @@ export default class StepForm extends PureComponent {
       </div>
     );
 
-    const stepSecond = <Table bordered dataSource={this.state.data} columns={this.columns} />;
-    const stepThird = <Table bordered dataSource={this.state.data} columns={this.columns} />;
+    const states = ['不可转资', '可转资', '待转资', '已转资'];
+    const status = ['error', 'processing', 'default', 'success'];
+
+    const columns = [
+      {
+        title: '资产标签号',
+        dataIndex: 'as_code',
+        render: (text, record) => this.renderColumns(text, record, 'as_code'),
+      },
+      {
+        title: '名称',
+        dataIndex: 'as_name',
+        render: (text, record) => this.renderColumns(text, record, 'as_name'),
+      },
+      {
+        title: '规格',
+        dataIndex: 'as_format',
+        render: (text, record) => this.renderColumns(text, record, 'as_format'),
+      },
+      {
+        title: '数量',
+        dataIndex: 'as_num',
+        render: (text, record) => this.renderColumns(text, record, 'as_num'),
+      },
+      {
+        title: '合同价值（元）',
+        dataIndex: 'as_amount',
+        render: (text, record) => this.renderColumns(text, record, 'as_amount'),
+      },
+      {
+        title: '转资状态',
+        dataIndex: 'cost_stock',
+        render: (value) => (
+          <span>
+            <Badge status={status[value % 4]} text={states[value % 4]} />
+          </span>
+        ),
+      },
+      {
+        title: '操作',
+        dataIndex: '操作',
+        render: (text, record) => {
+          const { editable } = record;
+          return (
+            <div className="editable-row-operations">
+              {editable ? (
+                <span>
+                  <a onClick={() => this.save(record.key)}>保存</a>
+                  <Popconfirm title="确定取消?" onConfirm={() => this.cancel(record.key)}>
+                    <a>取消</a>
+                  </Popconfirm>
+                </span>
+              ) : (
+                <a onClick={() => this.edit(record.key)}>编辑</a>
+              )}
+            </div>
+          );
+        },
+      },
+    ];
+
+    const stepSecond = <Table bordered dataSource={list} columns={columns} />;
+
+    const columns2 = [
+      {
+        title: '资产标签号',
+        dataIndex: 'as_code',
+        render: (text, record) => this.renderColumns(text, record, 'as_code'),
+      },
+      {
+        title: '名称',
+        dataIndex: 'as_name',
+        render: (text, record) => this.renderColumns(text, record, 'as_name'),
+      },
+      {
+        title: '规格',
+        dataIndex: 'as_format',
+        render: (text, record) => this.renderColumns(text, record, 'as_format'),
+      },
+      {
+        title: '数量',
+        dataIndex: 'as_num',
+        render: (text, record) => this.renderColumns(text, record, 'as_num'),
+      },
+      {
+        title: '合同价值（元）',
+        dataIndex: 'as_amount',
+        render: (text, record) => this.renderColumns(text, record, 'as_amount'),
+      },
+      {
+        title: '操作',
+        dataIndex: '操作',
+        render: () => {
+          return (
+            <div className="editable-row-operations">
+              <a>签收</a>
+            </div>
+          );
+        },
+      },
+    ];
+
+    const stepThird = <Table bordered dataSource={list} columns={columns2} rowSelection={{ columnWidth: 20 }} />;
+
+    const columns3 = [
+      {
+        title: '资产标签号',
+        dataIndex: 'as_code',
+        render: (text, record) => this.renderColumns(text, record, 'as_code'),
+      },
+      {
+        title: '名称',
+        dataIndex: 'as_name',
+        render: (text, record) => this.renderColumns(text, record, 'as_name'),
+      },
+      {
+        title: '规格',
+        dataIndex: 'as_format',
+        render: (text, record) => this.renderColumns(text, record, 'as_format'),
+      },
+      {
+        title: '数量',
+        dataIndex: 'as_num',
+        render: (text, record) => this.renderColumns(text, record, 'as_num'),
+      },
+      {
+        title: '合同价值（元）',
+        dataIndex: 'as_amount',
+        render: (text, record) => this.renderColumns(text, record, 'as_amount'),
+      },
+      {
+        title: '分摊价值（元）',
+        dataIndex: 'as_share_expense',
+        render: (text, record) => this.renderColumns(text, record, 'as_share_expense'),
+      },
+      {
+        title: '操作',
+        dataIndex: '操作',
+        render: () => {
+          return (
+            <div className="editable-row-operations">
+              <a>分摊</a>
+            </div>
+          );
+        },
+      },
+    ];
+
+    const step3 = <Table bordered dataSource={list} columns={columns3} rowSelection={{ columnWidth: 20 }} />;
+
     const stepLast = (
       <div>
         <Card bordered={false}>
           <Result
             type="success"
-            title="提交成功"
-            description="已提交 ERP 系统，请等待。"
-            extra={extra}
+            title="费用分摊完成"
+            description="请确认完成转资。"
             actions={actions}
             style={{ width: '100%' }}
             rowKey="materielName"
@@ -259,19 +401,23 @@ export default class StepForm extends PureComponent {
 
     const steps = [
       {
-        title: 'First',
+        title: '1',
         content: stepFirst,
       },
       {
-        title: 'Second',
+        title: '2',
         content: stepSecond,
       },
       {
-        title: 'Third',
+        title: '3',
         content:  stepThird,
       },
       {
-        title: 'Last',
+        title: '4',
+        content:  step3,
+      },
+      {
+        title: '5',
         content: stepLast,
       },
     ];
@@ -308,10 +454,11 @@ export default class StepForm extends PureComponent {
         footer={modalFooter}
       >
         <Steps current={this.state.current} className={styles.steps}>
-          <Step title="转资便利化配置" />
-          <Step title="资产定义" />
+          <Step title="资产生成" />
+          <Step title="资产维护" />
+          <Step title="资产签收" />
           <Step title="费用分摊" />
-          <Step title="提交 ERP 系统" />
+          <Step title="转资确认" />
           <Step title="完成" />
         </Steps>
         <div className={styles.stepsContent}>{steps[this.state.current].content}</div>

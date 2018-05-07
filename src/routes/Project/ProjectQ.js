@@ -88,9 +88,14 @@ export default class ProjectQ extends PureComponent {
         dataIndex: 'photos',
       },
       {
-        title: '施工单位',
-        dataIndex: 'q_is_sg',
+        title: '责任人',
         align: 'center',
+        dataIndex: 'owner',
+      },
+      {
+        title: '施工单位',
+        align: 'center',
+        render: () => '诺基亚',
       },
       {
         title: '监理单位',

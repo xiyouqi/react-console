@@ -6,6 +6,7 @@ import { List, Card, Row, Col, Radio, Input, Avatar, Button, Badge, Select } fro
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import StepForm from './StepForm';
 import ReadyForm from './ReadyForm';
+import ReviewForm from './ReviewForm';
 import styles from './AssessList.less';
 
 const RadioButton = Radio.Button;
@@ -21,6 +22,7 @@ export default class ProjectList extends PureComponent {
   state = {
     modalVisible: false,
     modalReadyVisible: false,
+    modalReviewVisible: false,
     current: 0,
   };
 
@@ -42,6 +44,12 @@ export default class ProjectList extends PureComponent {
   handleModalReadyVisible = flag => {
     this.setState({
       modalReadyVisible: !!flag,
+    });
+  };
+
+  handleModalReviewVisible = flag => {
+    this.setState({
+      modalReviewVisible: !!flag,
     });
   };
 
@@ -144,7 +152,7 @@ export default class ProjectList extends PureComponent {
         >
           发起项目后评估
         </Button>
-        <Button
+        {/* <Button
           icon="plus"
           type="primary"
           onClick={() => this.handleModalReadyVisible(true)}
@@ -152,7 +160,16 @@ export default class ProjectList extends PureComponent {
           style={{ marginTop: 8, marginBottom: 8 }}
         >
           编制项目后评估
-        </Button>
+        </Button> */}
+        {/* <Button
+          icon="plus"
+          type="primary"
+          onClick={() => this.handleModalReviewVisible(true)}
+          className={styles.uploadBtn}
+          style={{ marginTop: 8, marginBottom: 8 }}
+        >
+          评审项目后评估
+        </Button> */}
       </div>
     );
 
@@ -239,6 +256,10 @@ export default class ProjectList extends PureComponent {
         <ReadyForm
           {...{ handleModalVisible: this.handleModalReadyVisible }}
           modalVisible={this.state.modalReadyVisible}
+        />
+        <ReviewForm
+          {...{ handleModalVisible: this.handleModalReviewVisible }}
+          modalVisible={this.state.modalReviewVisible}
         />
       </PageHeaderLayout>
     );

@@ -94,7 +94,7 @@ export default class VendorList extends PureComponent {
               onClick={() => this.handleModalVisible(true)}
               className={styles.uploadBtn}
             >
-              创建
+              完工
             </Button>
             <Button
               icon="arrow-up"

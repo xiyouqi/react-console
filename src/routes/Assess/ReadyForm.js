@@ -271,7 +271,7 @@ export default class ReadyForm extends PureComponent {
 
     return (
       <Modal
-        title="后评估发起"
+        title="后评估编制"
         visible={modalVisible}
         width={1000}
         onCancel={() => handleModalVisible()}
